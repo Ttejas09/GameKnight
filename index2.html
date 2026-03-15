@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Soft Curved Scroll with Interactive UI</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            overflow-x: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .scroll-container {
+            width: 100%;
+            height: 500vh;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: monospace;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           HTML UI OVERLAY STYLES
+           ========================================= */
+        #ui-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            /* Lets you scroll through the empty space */
+            z-index: 5;
+        }
+
+        .content-block {
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+            width: 320px;
+            padding: 24px;
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* When this item is the center image in the 3D scene */
+        .content-block.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            /* Makes it clickable */
+        }
+
+        /* Hover effect to indicate it's clickable */
+        .content-block.active:hover {
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* The Expanded State */
+        .content-block.expanded {
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            /* Centers it on screen */
+            width: 70vw;
+            /* Matches the size of the 3D plane */
+            height: 70vh;
+            background: rgba(10, 10, 10, 0.85);
+            cursor: default;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Text Typography */
+        .content-block h2 {
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            transition: font-size 0.4s ease;
+        }
+
+        .content-block p.date {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content-block p.summary {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .content-block .full-text {
+            display: none;
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0;
+            color: #ddd;
+        }
+
+        /* Text changes when expanded */
+        .content-block.expanded h2 {
+            font-size: 42px;
+        }
+
+        .content-block.expanded p.summary {
+            display: none;
+        }
+
+        .content-block.expanded .full-text {
+            display: block;
+            animation: fadeIn 0.8s ease forwards 0.3s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Close Button */
+        .close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .content-block.expanded .close-btn {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading" id="loader">Loading Textures...</div>
+    <div class="scroll-container"></div>
+    <canvas id="webgl-canvas"></canvas>
+
+    <div id="ui-layer">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ==========================================
+        // DATA: Images and their corresponding Text
+        // ==========================================
+        const projectData = [
+            {
+                image: 'https://picsum.photos/seed/100/1280/720',
+                title: 'Neon Genesis',
+                date: '2026.03.15',
+                summary: 'Exploring the cyberpunk aesthetic in modern web design. Click to expand.',
+                fullText: 'This is the expanded view for Neon Genesis. Here you can place multiple paragraphs describing the project in depth, add embedded videos, or link out to the actual case study. The frosted glass background ensures the text remains readable while keeping the 3D scene subtly visible underneath.'
+            },
+            {
+                image: 'https://picsum.photos/seed/200/1280/720',
+                title: 'Wear Go Land',
+                date: '2025.05.16',
+                summary: 'A next-generation fashion metaverse application. Click to expand.',
+                fullText: 'Detailed information regarding the Wear Go Land fashion metaverse project goes here.'
+            },
+            {
+                image: 'https://picsum.photos/seed/300/1280/720',
+                title: 'Virtual Exhibition',
+                date: '2025.02.20',
+                summary: 'Hosting a massive fashion show entirely in virtual reality. Click to expand.',
+                fullText: 'Full details about the architecture and cloud rendering tech used to host the 2025 SS Virtual Exhibition.'
+            },
+            {
+                image: 'https://picsum.photos/seed/400/1280/720',
+                title: 'Matsuken Samba II',
+                date: '2024.10.18',
+                summary: 'Over 30 million views worldwide. Click to expand.',
+                fullText: 'A breakdown of the Matsuken Samba II project, outlining how it reached 30 million concurrent views in Fortnite.'
+            },
+            {
+                image: 'https://picsum.photos/seed/500/1280/720',
+                title: 'Run For Money',
+                date: '2024.07.29',
+                summary: 'Recreating the popular game show inside a gaming engine. Click to expand.',
+                fullText: 'How we achieved top 3 concurrent player counts globally by building Run For Money inside UEFN.'
+            },
+            {
+                image: 'https://picsum.photos/seed/600/1280/720',
+                title: 'Role Playing Music',
+                date: '2021.07.16',
+                summary: 'A world-first interactive music experience. Click to expand.',
+                fullText: 'The history and technical challenges behind building a seamless bridge between the real world and virtual concerts.'
+            }
+        ];
+
+        // ==========================================
+        // HTML GENERATION
+        // ==========================================
+        const uiLayer = document.getElementById('ui-layer');
+        const htmlBlocks = [];
+
+        projectData.forEach((data, index) => {
+            const block = document.createElement('div');
+            block.className = 'content-block';
+            if (index === 0) block.classList.add('active'); // First one active by default
+
+            block.innerHTML = `
+                <button class="close-btn">&times;</button>
+                <p class="date">${data.date}</p>
+                <h2>${data.title}</h2>
+                <p class="summary">${data.summary}</p>
+                <div class="full-text">
+                    <p>${data.fullText}</p>
+                </div>
+            `;
+
+            // Expand on click
+            block.addEventListener('click', (e) => {
+                if (e.target.className !== 'close-btn' && block.classList.contains('active')) {
+                    block.classList.add('expanded');
+                }
+            });
+
+            // Close on button click
+            block.querySelector('.close-btn').addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents the block click from firing
+                block.classList.remove('expanded');
+            });
+
+            uiLayer.appendChild(block);
+            htmlBlocks.push(block);
+        });
+
+        // ==========================================
+        // 1. GLSL SHADERS
+        // ==========================================
+        const vertexShader = `
+            varying vec2 vUv;
+            uniform float uScrollVelocity;
+            void main() {
+                vUv = uv;
+                vec3 pos = position;
+                float curveAmount = 0.03;
+                pos.z -= pow(abs(pos.x), 2.0) * curveAmount;
+                pos.x += pos.y * uScrollVelocity * 0.05;
+                gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec2 vUv;
+            uniform sampler2D uTexture;
+            uniform float uScrollVelocity;
+            void main() {
+                vec2 uv = vUv;
+                float rgbSplit = abs(uScrollVelocity) * 0.015;
+                float r = texture2D(uTexture, uv + vec2(rgbSplit, 0.0)).r;
+                float g = texture2D(uTexture, uv).g;
+                float b = texture2D(uTexture, uv - vec2(rgbSplit, 0.0)).b;
+                gl_FragColor = vec4(r, g, b, 1.0);
+            }
+        `;
+
+        const glowFragmentShader = `
+            varying vec2 vUv;
+            uniform sampler2D uTexture;
+            void main() {
+                vec2 uv = vUv;
+                vec4 color = vec4(0.0);
+                float blurSize = 0.03;
+                color += texture2D(uTexture, uv + vec2(-blurSize, -blurSize));
+                color += texture2D(uTexture, uv + vec2(0.0, -blurSize));
+                color += texture2D(uTexture, uv + vec2(blurSize, -blurSize));
+                color += texture2D(uTexture, uv + vec2(-blurSize, 0.0));
+                color += texture2D(uTexture, uv) * 2.0;
+                color += texture2D(uTexture, uv + vec2(blurSize, 0.0));
+                color += texture2D(uTexture, uv + vec2(-blurSize, blurSize));
+                color += texture2D(uTexture, uv + vec2(0.0, blurSize));
+                color += texture2D(uTexture, uv + vec2(blurSize, blurSize));
+                color /= 10.0;
+                float dist = distance(uv, vec2(0.5));
+                float alpha = smoothstep(0.5, 0.1, dist);
+                gl_FragColor = vec4(color.rgb * 1.5, alpha * 0.8);
+            }
+        `;
+
+        // ==========================================
+        // 2. SCENE SETUP
+        // ==========================================
+        const canvas = document.querySelector('#webgl-canvas');
+        const scene = new THREE.Scene();
+
+        const gridHelper = new THREE.GridHelper(50, 50, 0x333333, 0x111111);
+        gridHelper.rotation.x = Math.PI / 2;
+        gridHelper.position.z = -5;
+        scene.add(gridHelper);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 4.0;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // ==========================================
+        // 3. CREATE PLANES 
+        // ==========================================
+        const carouselItems = [];
+        const numPlanes = projectData.length;
+        const planeWidth = 7.2;
+        const planeHeight = 4.05;
+        const gap = 5.8;
+
+        const carouselGroup = new THREE.Group();
+        scene.add(carouselGroup);
+
+        const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+
+        let loadedCount = 0;
+
+        projectData.forEach((data, i) => {
+            textureLoader.load(data.image, (texture) => {
+
+                const mainMaterial = new THREE.ShaderMaterial({
+                    vertexShader: vertexShader,
+                    fragmentShader: fragmentShader,
+                    uniforms: { uTexture: { value: texture }, uScrollVelocity: { value: 0 } },
+                    side: THREE.DoubleSide, transparent: true
+                });
+                const mainPlane = new THREE.Mesh(geometry, mainMaterial);
+
+                const glowMaterial = new THREE.ShaderMaterial({
+                    vertexShader: vertexShader,
+                    fragmentShader: glowFragmentShader,
+                    uniforms: { uTexture: { value: texture }, uScrollVelocity: { value: 0 } },
+                    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+                });
+                const glowPlane = new THREE.Mesh(geometry, glowMaterial);
+                glowPlane.position.z = -0.5;
+                glowPlane.scale.set(1.2, 1.2, 1.2);
+
+                const itemGroup = new THREE.Group();
+                itemGroup.add(mainPlane);
+                itemGroup.add(glowPlane);
+                itemGroup.position.x = i * gap;
+
+                carouselGroup.add(itemGroup);
+                carouselItems.push(itemGroup); // We map to HTML blocks via the index later
+
+                loadedCount++;
+                if (loadedCount === numPlanes) {
+                    document.getElementById('loader').style.display = 'none';
+                    // Sort carousel items by X position just in case textures loaded out of order
+                    carouselItems.sort((a, b) => a.position.x - b.position.x);
+                }
+            });
+        });
+
+        // ==========================================
+        // 4. ANIMATION & UI SYNC LOGIC
+        // ==========================================
+        let scrollVelocity = 0;
+        let lastScrollY = window.scrollY;
+        const totalMovement = -(numPlanes - 1) * gap;
+
+        // Tracks which image is currently in the center
+        let activeIndex = 0;
+
+        gsap.to(carouselGroup.position, {
+            x: totalMovement,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".scroll-container",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const currentScrollY = window.scrollY;
+            const deltaY = currentScrollY - lastScrollY;
+
+            scrollVelocity += (deltaY * 0.01 - scrollVelocity) * 0.1;
+            lastScrollY = currentScrollY;
+
+            let closestDistance = Infinity;
+            let currentActiveIndex = 0;
+
+            carouselItems.forEach((group, index) => {
+
+                group.children.forEach(child => {
+                    if (child.material.uniforms && child.material.uniforms.uScrollVelocity) {
+                        child.material.uniforms.uScrollVelocity.value = scrollVelocity;
+                    }
+                });
+
+                const globalPosition = new THREE.Vector3();
+                group.getWorldPosition(globalPosition);
+
+                const distFromCenter = Math.abs(globalPosition.x);
+
+                // Find which plane is closest to X = 0 (the center)
+                if (distFromCenter < closestDistance) {
+                    closestDistance = distFromCenter;
+                    currentActiveIndex = index;
+                }
+
+                const scale = Math.max(1 - distFromCenter * 0.12, 0.0001);
+                group.scale.set(scale, scale, scale);
+
+                group.position.z = -Math.pow(distFromCenter, 1.4) * 0.3;
+                group.rotation.y = globalPosition.x * 0.08;
+            });
+
+            // If the center image changed, update the HTML UI
+            if (currentActiveIndex !== activeIndex && htmlBlocks.length > 0) {
+                // Remove active class from old block and collapse it
+                htmlBlocks[activeIndex].classList.remove('active');
+                htmlBlocks[activeIndex].classList.remove('expanded');
+
+                // Set new active block
+                activeIndex = currentActiveIndex;
+                htmlBlocks[activeIndex].classList.add('active');
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>
