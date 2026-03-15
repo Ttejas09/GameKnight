@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Scroll - Clickable Images</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            overflow-x: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .scroll-container {
+            width: 100%;
+            height: 500vh;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: monospace;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           HTML UI OVERLAY STYLES
+           ========================================= */
+        #ui-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            /* Everything ignores mouse clicks so you can click the canvas behind it */
+            z-index: 5;
+        }
+
+        /* The info card (No longer a link) */
+        .content-block {
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+            width: 340px;
+            padding: 28px;
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        .content-block.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-block h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .content-block p.date {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content-block p.summary {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading" id="loader">Loading Textures...</div>
+    <div class="scroll-container"></div>
+    <canvas id="webgl-canvas"></canvas>
+
+    <div id="ui-layer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ==========================================
+        // DATA: Images, Text, and the Target Link
+        // ==========================================
+        const projectData = [
+            {
+                image: 'https://picsum.photos/seed/100/1280/720',
+                title: 'Neon Genesis',
+                date: '2026.03.15',
+                summary: 'Exploring the cyberpunk aesthetic in modern web design.',
+                link: '/game_page.html'
+            },
+            {
+                image: 'https://picsum.photos/seed/200/1280/720',
+                title: 'Wear Go Land',
+                date: '2025.05.16',
+                summary: 'A next-generation fashion metaverse application.',
+                link: '/project-2.html'
+            },
+            {
+                image: 'https://picsum.photos/seed/300/1280/720',
+                title: 'Virtual Exhibition',
+                date: '2025.02.20',
+                summary: 'Hosting a massive fashion show entirely in virtual reality.',
+                link: '/project-3.html'
+            },
+            {
+                image: 'https://picsum.photos/seed/400/1280/720',
+                title: 'Matsuken Samba II',
+                date: '2024.10.18',
+                summary: 'Over 30 million views worldwide.',
+                link: '/project-4.html'
+            },
+            {
+                image: 'https://picsum.photos/seed/500/1280/720',
+                title: 'Run For Money',
+                date: '2024.07.29',
+                summary: 'Recreating the popular game show inside a gaming engine.',
+                link: '/project-5.html'
+            },
+            {
+                image: 'https://picsum.photos/seed/600/1280/720',
+                title: 'Role Playing Music',
+                date: '2021.07.16',
+                summary: 'A world-first interactive music experience.',
+                link: '/project-6.html'
+            }
+        ];
+
+        // ==========================================
+        // HTML GENERATION (Informational Only)
+        // ==========================================
+        const uiLayer = document.getElementById('ui-layer');
+        const htmlBlocks = [];
+
+        projectData.forEach((data, index) => {
+            const block = document.createElement('div');
+            block.className = 'content-block';
+            if (index === 0) block.classList.add('active');
+
+            block.innerHTML = `
+                <p class="date">${data.date}</p>
+                <h2>${data.title}</h2>
+                <p class="summary">${data.summary}</p>
+            `;
+
+            uiLayer.appendChild(block);
+            htmlBlocks.push(block);
+        });
+
+        // ==========================================
+        // 1. GLSL SHADERS
+        // ==========================================
+        const vertexShader = `
+            varying vec2 vUv;
+            uniform float uScrollVelocity;
+            void main() {
+                vUv = uv;
+                vec3 pos = position;
+                float curveAmount = 0.03;
+                pos.z -= pow(abs(pos.x), 2.0) * curveAmount;
+                pos.x += pos.y * uScrollVelocity * 0.05;
+                gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec2 vUv;
+            uniform sampler2D uTexture;
+            uniform float uScrollVelocity;
+            void main() {
+                vec2 uv = vUv;
+                float rgbSplit = abs(uScrollVelocity) * 0.015;
+                float r = texture2D(uTexture, uv + vec2(rgbSplit, 0.0)).r;
+                float g = texture2D(uTexture, uv).g;
+                float b = texture2D(uTexture, uv - vec2(rgbSplit, 0.0)).b;
+                gl_FragColor = vec4(r, g, b, 1.0);
+            }
+        `;
+
+        const glowFragmentShader = `
+            varying vec2 vUv;
+            uniform sampler2D uTexture;
+            void main() {
+                vec2 uv = vUv;
+                vec4 color = vec4(0.0);
+                float blurSize = 0.03;
+                color += texture2D(uTexture, uv + vec2(-blurSize, -blurSize));
+                color += texture2D(uTexture, uv + vec2(0.0, -blurSize));
+                color += texture2D(uTexture, uv + vec2(blurSize, -blurSize));
+                color += texture2D(uTexture, uv + vec2(-blurSize, 0.0));
+                color += texture2D(uTexture, uv) * 2.0;
+                color += texture2D(uTexture, uv + vec2(blurSize, 0.0));
+                color += texture2D(uTexture, uv + vec2(-blurSize, blurSize));
+                color += texture2D(uTexture, uv + vec2(0.0, blurSize));
+                color += texture2D(uTexture, uv + vec2(blurSize, blurSize));
+                color /= 10.0;
+                float dist = distance(uv, vec2(0.5));
+                float alpha = smoothstep(0.5, 0.1, dist);
+                gl_FragColor = vec4(color.rgb * 1.5, alpha * 0.8);
+            }
+        `;
+
+        // ==========================================
+        // 2. SCENE SETUP
+        // ==========================================
+        const canvas = document.querySelector('#webgl-canvas');
+        const scene = new THREE.Scene();
+
+        const gridHelper = new THREE.GridHelper(50, 50, 0x333333, 0x111111);
+        gridHelper.rotation.x = Math.PI / 2;
+        gridHelper.position.z = -5;
+        scene.add(gridHelper);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 4.0;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // ==========================================
+        // 3. CREATE PLANES & PREPARE FOR RAYCASTING
+        // ==========================================
+        const carouselItems = [];
+        const clickablePlanes = []; // Array specifically for raycasting
+        const numPlanes = projectData.length;
+        const planeWidth = 7.2;
+        const planeHeight = 4.05;
+        const gap = 5.8;
+
+        const carouselGroup = new THREE.Group();
+        scene.add(carouselGroup);
+
+        const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+
+        let loadedCount = 0;
+
+        projectData.forEach((data, i) => {
+            textureLoader.load(data.image, (texture) => {
+
+                const mainMaterial = new THREE.ShaderMaterial({
+                    vertexShader: vertexShader,
+                    fragmentShader: fragmentShader,
+                    uniforms: { uTexture: { value: texture }, uScrollVelocity: { value: 0 } },
+                    side: THREE.DoubleSide, transparent: true
+                });
+
+                const mainPlane = new THREE.Mesh(geometry, mainMaterial);
+
+                // IMPORTANT: Attach the URL to the 3D plane so the raycaster knows where to go
+                mainPlane.userData = { link: data.link };
+                clickablePlanes.push(mainPlane);
+
+                const glowMaterial = new THREE.ShaderMaterial({
+                    vertexShader: vertexShader,
+                    fragmentShader: glowFragmentShader,
+                    uniforms: { uTexture: { value: texture }, uScrollVelocity: { value: 0 } },
+                    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+                });
+
+                const glowPlane = new THREE.Mesh(geometry, glowMaterial);
+                glowPlane.position.z = -0.5;
+                glowPlane.scale.set(1.2, 1.2, 1.2);
+
+                const itemGroup = new THREE.Group();
+                itemGroup.add(mainPlane);
+                itemGroup.add(glowPlane);
+                itemGroup.position.x = i * gap;
+
+                carouselGroup.add(itemGroup);
+                carouselItems.push(itemGroup);
+
+                loadedCount++;
+                if (loadedCount === numPlanes) {
+                    document.getElementById('loader').style.display = 'none';
+                    carouselItems.sort((a, b) => a.position.x - b.position.x);
+                }
+            });
+        });
+
+        // ==========================================
+        // 4. RAYCASTING (Making the 3D planes clickable)
+        // ==========================================
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // Track mouse movement to change the cursor to a pointer when hovering over an image
+        window.addEventListener('mousemove', (event) => {
+            // Convert mouse position to normalized device coordinates (-1 to +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Shoot the laser from the camera to the mouse position
+            raycaster.setFromCamera(mouse, camera);
+
+            // Check if the laser hits any of our images
+            const intersects = raycaster.intersectObjects(clickablePlanes);
+
+            if (intersects.length > 0) {
+                document.body.style.cursor = 'pointer'; // Show hand cursor
+            } else {
+                document.body.style.cursor = 'default'; // Show normal cursor
+            }
+        });
+
+        // Handle the actual click event
+        window.addEventListener('click', (event) => {
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(clickablePlanes);
+
+            if (intersects.length > 0) {
+                // If we clicked an image, get its attached link and navigate there
+                const clickedPlane = intersects[0].object;
+                const targetLink = clickedPlane.userData.link;
+                window.location.href = targetLink;
+            }
+        });
+
+        // ==========================================
+        // 5. ANIMATION & UI SYNC LOGIC
+        // ==========================================
+        let scrollVelocity = 0;
+        let lastScrollY = window.scrollY;
+        const totalMovement = -(numPlanes - 1) * gap;
+        let activeIndex = 0;
+
+        gsap.to(carouselGroup.position, {
+            x: totalMovement,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".scroll-container",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const currentScrollY = window.scrollY;
+            const deltaY = currentScrollY - lastScrollY;
+
+            scrollVelocity += (deltaY * 0.01 - scrollVelocity) * 0.1;
+            lastScrollY = currentScrollY;
+
+            let closestDistance = Infinity;
+            let currentActiveIndex = 0;
+
+            carouselItems.forEach((group, index) => {
+
+                group.children.forEach(child => {
+                    if (child.material.uniforms && child.material.uniforms.uScrollVelocity) {
+                        child.material.uniforms.uScrollVelocity.value = scrollVelocity;
+                    }
+                });
+
+                const globalPosition = new THREE.Vector3();
+                group.getWorldPosition(globalPosition);
+
+                const distFromCenter = Math.abs(globalPosition.x);
+
+                if (distFromCenter < closestDistance) {
+                    closestDistance = distFromCenter;
+                    currentActiveIndex = index;
+                }
+
+                const scale = Math.max(1 - distFromCenter * 0.12, 0.0001);
+                group.scale.set(scale, scale, scale);
+
+                group.position.z = -Math.pow(distFromCenter, 1.4) * 0.3;
+                group.rotation.y = globalPosition.x * 0.08;
+            });
+
+            if (currentActiveIndex !== activeIndex && htmlBlocks.length > 0) {
+                htmlBlocks[activeIndex].classList.remove('active');
+                activeIndex = currentActiveIndex;
+                htmlBlocks[activeIndex].classList.add('active');
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>
