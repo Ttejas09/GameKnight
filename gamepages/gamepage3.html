@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html,
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        p {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .title h1,
+        .title h2,
+        .sim-games h1,
+        .system-req h1 {
+            font-family: 'Cinzel', serif;
+            color: #ebd79b;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(235, 215, 155, 0.4),
+                0 0 20px rgba(235, 215, 155, 0.2);
+        }
+
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            will-change: filter;
+            /* ADD THIS LINE */
+            transform: translateZ(0);
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .list {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+            color: white;
+            text-align: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 30px;
+            border-radius: 30px;
+            align-items: center;
+
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #img1 {
+            height: 30px;
+            width: auto;
+            background: none;
+        }
+
+        #mainimg1 {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 50px;
+            border-radius: 12px;
+        }
+
+
+        #panel {
+            position: relative;
+            /* backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(0, 0, 0, 0.6); */
+            background: none;
+            padding: 20px;
+            margin-top: 100vh;
+            min-height: 400vh;
+            display: flex;
+        }
+
+        .right {
+            color: white;
+            gap: 20px;
+            border: 1px solid white;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        .info-section {
+            display: flex;
+            gap: 40px;
+        }
+
+        .title {
+            border: 1px solid white;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            /* border-radius: 20px; */
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+
+            /* Remove the solid white box */
+            border: none;
+
+            /* Add a glowing golden underline */
+            border-bottom: 2px solid rgba(235, 215, 155, 0.5);
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+            border-radius: 0;
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        #mainimg2 {
+            height: 300px;
+            width: auto;
+            gap: 20px;
+        }
+
+        .link {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .link:hover {
+            color: #ebd79b;
+        }
+
+        .linktable {
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 1;
+
+            margin-bottom: 50px;
+        }
+
+        .sim-games div {
+            display: flex;
+            padding: 10px;
+        }
+
+        .linktable div {
+            border: 1px white solid;
+            border-radius: 20px;
+        }
+
+        .linktable div :hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 200px;
+            width: 100%;
+            ;
+        }
+
+        .trailervid video {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .right-right {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .official-download {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            border-radius: 20px;
+
+            opacity: 1;
+            margin-bottom: 70px;
+        }
+
+        #official-link {
+            height: 50px;
+            border: solid white 1px;
+            color: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .linktable.in-view {
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .official-download.in-view {
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .right.in-view {
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .system-req.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+
+        }
+
+        .sim-games.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .system-req {
+            color: white;
+            text-align: center;
+
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+
+        }
+
+        .sim-games {
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        .sim-games h1 {
+            text-align: center;
+            margin: 0;
+            width: 100%;
+            /* Optional: Removes extra default spacing so it sits perfectly in the middle of the box */
+        }
+
+        .sim-img {
+            width: 50px;
+            height: auto;
+        }
+
+        .min {
+            text-align: center;
+            width: 50%;
+        }
+
+        .rec {
+            text-align: center;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-vid">
+        <source src="media/Dark Souls III Edit. (4k 60FPS Ultra HD)_1080p60.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="#" class="link">about</a></li>
+            <li><a href="#" class="link">home </a></li>
+            <li><a href="#" class="link">categories</a></li>
+            <li><a href="#" class="link">knightbot</a></li>
+            <li><a href="#" class="link">coms-hub</a></li>
+
+            <li><button onclick="sound()" id="mutebtn"><img src="media/1818835-200.png" id="img1"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="media/9085f5ef67f2f7f0f38e869ffb5016a1.jpg" id="mainimg1"><br><br><br>
+
+                <div class="linktable">
+                    <div>
+                        <p>walkthrough:<a
+                                href="https://youtube.com/playlist?list=PL7RtZMiaOk8gqctsEgBQ9IhQAnm_P5ILT&si=Gryvn8yzGKSIqB5-"
+                                class="link">click
+                                here</a></p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>download link:<a href="download" class="link">click here</a></p>
+                        <p>(unofficial)</p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>wikipidia:<a href="https://en.wikipedia.org/wiki/Dark_Souls_III" class="link">click here</a>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>similar games </h1>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/imgsekiro2.png">
+                        </div>
+                        <div class="r1">
+                            <p>sekiro</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/img.1.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 1</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image2.webp">
+                        </div>
+                        <div class="r1">
+                            <p>elden ring </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="title">
+                    <h1>OVERVIEW</h1>
+                </div>
+                <div>
+                    <p>Dark Souls III[a] is a 2016 action role-playing game developed by FromSoftware and published by
+                        Bandai Namco Entertainment. Released for the PlayStation 4, Xbox One, and Windows, the game is
+                        the third and final entry in the Dark Souls series and follows an unkindled warrior on a quest
+                        to prevent the end of the world. It is played in a third-person perspective, and players have
+                        access to various weapons, armour, magic, and consumables that they can use to fight their
+                        enemies. Hidetaka Miyazaki, the creator of the series, returned to direct the game after handing
+                        the development duties of Dark Souls II to others.</p>
+
+                </div>
+
+                <div class="title">
+                    <h1>PLOT</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <p>In Lothric, a bell tolls to signal that the First Flame, responsible for maintaining the Age
+                            of Fire, is dying out. As has happened many times before, the coming of the Age of Dark
+                            produces the undead: cursed beings that rise after death. The Age of Fire can be prolonged
+                            by linking the fire, a ritual in which great lords and heroes sacrifice their souls to
+                            rekindle the First Flame. However, Prince Lothric, the chosen linker for this age, abandoned
+                            his duty and chose to watch the flame die from afar. The bell is the last hope for the Age
+                            of Fire, resurrecting previous Lords of Cinder (heroes who linked the flame in past ages) to
+                            attempt to link the fire again; however, all but one Lord shirk their duty. Meanwhile,
+                            Sulyvahn, a sorcerer from the Painted World of Ariandel, wrongfully proclaims himself
+                            Pontiff and seizes power over Irithyll of the Boreal Valley and Anor Londo as a tyrant.</p>
+
+                        <p> The Ashen One, an Undead who failed to become a Lord of Cinder and thus called an Unkindled,
+                            rises and must link the fire by returning Prince Lothric and the defiant Lords of Cinder to
+                            their thrones in Firelink Shrine. The Lords include the Abyss Watchers, a restless
+                            infighting legion of warriors sworn to the Old Wolf's Blood which linked their souls into
+                            one to protect the land from the Abyss; Yhorm the Giant, who sacrificed his life for a
+                            nation conquered by his ancestor; and Aldrich, who became a Lord of Cinder through sheer
+                            strength despite his ravenous appetite for both men and gods. Lothric himself was raised to
+                            link the First Flame but shirked his duties and chose instead to watch the fire fade.
+                        </p>
+                    </div>
+                    <div class="r1">
+                        <img src="img 3.jpg" id="mainimg2">
+                    </div>
+                </div>
+                <div class="title">
+                    <h1>Development and release</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <img src="img 3.jpg" id="mainimg2">
+                    </div>
+                    <div class="r1">
+                        <p>The game's development began in mid-2013 before the release of Dark Souls II, whose
+                            development was handled by Tomohiro Shibuya and Yui Tanimura instead of the series creator,
+                            Hidetaka Miyazaki.[12] The game was developed alongside Bloodborne but was handled by two
+                            mainly separate teams. Miyazaki also returned to direct Dark Souls III. Isamu Okano and
+                            Tanimura, the directors of Steel Battalion: Heavy Armor and Dark Souls II, respectively,
+                            served as sub-directors for the game.[13] Despite Miyazaki initially believing that the
+                            series would not have many sequels,[14] Miyazaki later added that the game would not be the
+                            last in the series. Instead, it would serve as a "turning point" for both the franchise and
+                            the studio, as it was the last project by FromSoftware before Miyazaki became the company's
+                            president.[15] The game's gameplay was then first shown at Gamescom 2015 in August.[16]
+
+                        </p>
+                    </div>
+                </div>
+                <div class="trailervid">
+                    <iframe width="800" height="450" src="https://youtube.com/embed/cWBwFhUv1-8?si=ksq7iHwkwqSDN86H"
+                        title="dark souls 3 Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+            <div class="right-right">
+                <div class="official-download">
+                    <div>
+                        <img src="cropped_circle_image (2).png">
+                    </div>
+                    <div id="official-link">OFFICIAL DOWNLOAD LINK:<a
+                            href="https://store.steampowered.com/app/374320/DARK_SOULS_III/" class="link"> download</a>
+                    </div>
+
+                </div>
+                <div class="system-req">
+                    <div class="title">
+                        <h1>system requirements</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>minimum </h2>
+                            <p>OS:<br><br> Windows 7 SP1 / 8.1 / 10 (64-bit) </p>
+                            <p>Processor:<br><br> Intel Core i3-2100 or AMD FX-6300</p>
+                            <p>Memory:<br><br> 4 GB RAM</p>
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 750 Ti or AMD Radeon HD 7950</p>
+                            <p>Storage:<br><br> 25 GB available space</p>
+
+
+                        </div>
+                        <div class="rec">
+                            <h2>recommended</h2>
+                            <p>OS:<br><br> Windows 7 SP1 / 8.1 / 10 (64-bit)</p>
+
+                            <p>Processor:<br><br> Intel Core i7-3770 or AMD FX-8350</p>
+
+                            <p>Memory:<br><br> 8 GB RAM</p>
+
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 970 or AMD Radeon R9 series</p>
+
+                            <p>Storage:<br><br> 25 GB available space</p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        function sound() {
+            const bgsound = document.getElementById("bg-vid");
+            const mutebtn = document.getElementById("mutebtn");
+
+
+            if (bgsound.muted == true) {
+                bgsound.muted = false;
+                mutebtn.innerHTML = `<img src="do-not-make-a-loud-noise-no-speaker-no-sound-icon-free-vector.jpg" id="img1">`;
+
+
+            }
+            else {
+                bgsound.muted = true;
+                mutebtn.innerHTML = `<img src="1818835-200.png" id="img1">`;
+            }
+        }
+
+        window.addEventListener("scroll", function () {
+
+            let scrollY = window.scrollY;
+            let blurAmount = Math.min(scrollY / 80, 10);
+
+            document.getElementById("bg-vid").style.filter =
+                "blur(" + blurAmount + "px)";
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2 // Triggers when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add the class that triggers the animation
+                        entry.target.classList.add("in-view");
+
+                        // Stop observing once the animation has triggered
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Target the elements we want to animate
+            const animatedElements = document.querySelectorAll('.right, .linktable, .official-download ,.system-req ,.sim-games');
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

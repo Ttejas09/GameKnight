@@ -1,0 +1,145 @@
+.hero-section,
+.hero-section * {
+  box-sizing: border-box;
+}
+
+.hero-section {
+  position: relative;
+  min-height: calc(100vh - 56px);
+  overflow: hidden;
+  background-color: #0f1011;
+  padding: 28px 40px 48px;
+}
+
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(69, 193, 188, 0.14), transparent 48%),
+              linear-gradient(180deg, rgba(15, 16, 17, 0.28) 0%, rgba(15, 16, 17, 0.82) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  padding-top: clamp(48px, 8vh, 96px);
+}
+
+.hero-eyebrow,
+.hero-title,
+.hero-subtitle,
+.hero-actions {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #45c1bc;
+  background: rgba(69, 193, 188, 0.14);
+  font: 600 0.8125rem/1 "GT Medium", "Segoe UI", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation-delay: 0.1s;
+}
+
+.hero-title {
+  margin: 0;
+  color: #ffffff;
+  font: 800 clamp(2.4rem, 7vw, 5.6rem)/0.95 "GT Bold", "Segoe UI", sans-serif;
+  animation-delay: 0.2s;
+}
+
+.hero-subtitle {
+  margin: 16px 0 0;
+  max-width: 62ch;
+  color: #d4d4d4;
+  font: 400 clamp(1rem, 2.3vw, 1.2rem)/1.6 "GT Regular", "Segoe UI", sans-serif;
+  animation-delay: 0.3s;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  animation-delay: 0.4s;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
+  font: 600 0.98rem/1 "GT Medium", "Segoe UI", sans-serif;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.hero-btn-primary {
+  background: #45c1bc;
+  color: #0f1011;
+}
+
+.hero-btn-muted {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+}
+
+.hero-btn-dark {
+  background: #ffffff;
+  color: #0f1011;
+}
+
+.hero-btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.hero-btn-icon-linkedin {
+  width: 19px;
+  height: 19px;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    padding: 18px 20px 32px;
+  }
+
+  .hero-actions {
+    margin-top: 22px;
+  }
+}

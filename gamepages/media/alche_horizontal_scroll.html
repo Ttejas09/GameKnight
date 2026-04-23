@@ -1,0 +1,353 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .scroll-section {
+    background: #0a0a0a;
+    width: 100%;
+    overflow: hidden;
+    padding: 60px 0 60px 60px;
+    user-select: none;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-right: 60px;
+    margin-bottom: 40px;
+  }
+
+  .section-label {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  .scroll-hint {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #444;
+    text-transform: uppercase;
+  }
+
+  .cards-track {
+    display: flex;
+    gap: 20px;
+    cursor: grab;
+    width: max-content;
+    transition: transform 0.05s linear;
+    padding-right: 60px;
+  }
+
+  .cards-track.dragging {
+    cursor: grabbing;
+    transition: none;
+  }
+
+  .card {
+    width: 340px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    background: #1a1a1a;
+    position: relative;
+  }
+
+  .card-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 24px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
+  }
+
+  .card-year {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: #888;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .card-tag {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #999;
+    border: 0.5px solid #444;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #666;
+    margin-top: 40px;
+    padding-right: 60px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .more-link:hover { color: #fff; }
+  .more-link::after {
+    content: '→';
+    font-size: 13px;
+  }
+
+  .progress-bar {
+    width: calc(100% - 120px);
+    height: 1px;
+    background: #1e1e1e;
+    margin-top: 32px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #fff;
+    width: 20%;
+    transition: width 0.15s ease;
+  }
+</style>
+
+<div class="scroll-section">
+
+  <div class="section-header">
+    <span class="section-label">works</span>
+    <span class="scroll-hint">drag to explore</span>
+  </div>
+
+  <div class="cards-track" id="track">
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #111418;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#0f1114"/>
+          <circle cx="170" cy="100" r="48" fill="none" stroke="#1e2530" stroke-width="1"/>
+          <circle cx="170" cy="100" r="28" fill="#1a2033"/>
+          <text x="170" y="106" text-anchor="middle" fill="#3a4560" font-size="10" font-family="Helvetica Neue" letter-spacing="2">FORTNITE</text>
+          <rect x="60" y="170" width="220" height="0.5" fill="#1e2530"/>
+          <text x="170" y="200" text-anchor="middle" fill="#2a3040" font-size="9" font-family="Helvetica Neue" letter-spacing="3">IN-GAME CONCERT</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2026</div>
+        <div class="card-title">KizunaAI "Hello, Fortnite"</div>
+        <div class="card-tags">
+          <span class="card-tag">In-Game Concert</span>
+          <span class="card-tag">Fortnite</span>
+          <span class="card-tag">Metaverse</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #0d1118;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#090d12"/>
+          <rect x="80" y="60" width="180" height="140" rx="2" fill="#111820" stroke="#1c2535" stroke-width="0.5"/>
+          <rect x="100" y="80" width="60" height="60" rx="1" fill="#162030" stroke="#253550" stroke-width="0.5"/>
+          <rect x="172" y="80" width="68" height="28" rx="1" fill="#162030" stroke="#253550" stroke-width="0.5"/>
+          <rect x="172" y="116" width="68" height="24" rx="1" fill="#162030" stroke="#253550" stroke-width="0.5"/>
+          <text x="170" y="200" text-anchor="middle" fill="#253040" font-size="9" font-family="Helvetica Neue" letter-spacing="3">FASHION METAVERSE</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2025</div>
+        <div class="card-title">WEAR GO LAND</div>
+        <div class="card-tags">
+          <span class="card-tag">stellla</span>
+          <span class="card-tag">Unreal Engine</span>
+          <span class="card-tag">Mobile</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #100e0e;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#0d0b0b"/>
+          <ellipse cx="170" cy="115" rx="70" ry="55" fill="none" stroke="#2a1e1e" stroke-width="0.5"/>
+          <ellipse cx="170" cy="115" rx="40" ry="30" fill="#1a1212"/>
+          <line x1="100" y1="115" x2="240" y2="115" stroke="#251818" stroke-width="0.5"/>
+          <line x1="170" y1="60" x2="170" y2="170" stroke="#251818" stroke-width="0.5"/>
+          <text x="170" y="200" text-anchor="middle" fill="#2a1e1e" font-size="9" font-family="Helvetica Neue" letter-spacing="3">FASHION SHOW</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2025</div>
+        <div class="card-title">DISCOAT 2025SS Exhibition in Virtual</div>
+        <div class="card-tags">
+          <span class="card-tag">stellla</span>
+          <span class="card-tag">Cloud Rendering</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #110f08;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#0d0c08"/>
+          <polygon points="170,55 215,130 170,110 125,130" fill="none" stroke="#2a2510" stroke-width="0.5"/>
+          <polygon points="170,110 215,130 170,185 125,130" fill="#181508" stroke="#2a2510" stroke-width="0.5"/>
+          <text x="170" y="210" text-anchor="middle" fill="#2a2515" font-size="9" font-family="Helvetica Neue" letter-spacing="3">30M PV</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2024</div>
+        <div class="card-title">Matsuken SambaⅡ Rise Up the World</div>
+        <div class="card-tags">
+          <span class="card-tag">Fortnite</span>
+          <span class="card-tag">Metaverse</span>
+          <span class="card-tag">In-Game Concert</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #0a0e14;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#080c12"/>
+          <rect x="60" y="70" width="220" height="120" rx="2" fill="#0f1520" stroke="#182030" stroke-width="0.5"/>
+          <rect x="80" y="90" width="180" height="80" rx="1" fill="#131d2a"/>
+          <circle cx="170" cy="130" r="22" fill="none" stroke="#1e3050" stroke-width="0.5"/>
+          <polygon points="163,122 163,138 179,130" fill="#1e3050"/>
+          <text x="170" y="210" text-anchor="middle" fill="#1e2a3a" font-size="9" font-family="Helvetica Neue" letter-spacing="3">WORLD TOP 3</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2024</div>
+        <div class="card-title">run for money CREATED IN FORTNITE</div>
+        <div class="card-tags">
+          <span class="card-tag">Fortnite</span>
+          <span class="card-tag">Metaverse</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-placeholder" style="background: #0e0c14;">
+        <svg width="100%" height="100%" viewBox="0 0 340 255" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;">
+          <rect width="340" height="255" fill="#0b0910"/>
+          <circle cx="170" cy="110" r="55" fill="none" stroke="#1e1830" stroke-width="0.5"/>
+          <circle cx="170" cy="110" r="32" fill="none" stroke="#251e38" stroke-width="0.5"/>
+          <circle cx="170" cy="110" r="12" fill="#1a1528"/>
+          <text x="170" y="195" text-anchor="middle" fill="#221c32" font-size="9" font-family="Helvetica Neue" letter-spacing="3">ROLE PLAYING MUSIC</text>
+        </svg>
+      </div>
+      <div class="card-overlay">
+        <div class="card-year">2021</div>
+        <div class="card-title">RADWIMPS Role Playing Music</div>
+        <div class="card-tags">
+          <span class="card-tag">Metaverse</span>
+          <span class="card-tag">Unreal Engine</span>
+          <span class="card-tag">Mobile</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <div class="more-link">More Works</div>
+
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const progressFill = document.getElementById('progress');
+  let isDown = false, startX, scrollLeft = 0, currentX = 0;
+  let maxScroll = 0;
+
+  function getMaxScroll() {
+    return track.scrollWidth - track.parentElement.clientWidth + 60;
+  }
+
+  function updateProgress() {
+    maxScroll = getMaxScroll();
+    const pct = maxScroll > 0 ? Math.min(Math.abs(currentX) / maxScroll, 1) : 0;
+    progressFill.style.width = (15 + pct * 65) + '%';
+  }
+
+  track.addEventListener('mousedown', (e) => {
+    isDown = true;
+    track.classList.add('dragging');
+    startX = e.pageX;
+    scrollLeft = currentX;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const dx = e.pageX - startX;
+    currentX = Math.max(-(getMaxScroll()), Math.min(0, scrollLeft + dx));
+    track.style.transform = `translateX(${currentX}px)`;
+    updateProgress();
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDown = false;
+    track.classList.remove('dragging');
+  });
+
+  track.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+    scrollLeft = currentX;
+  });
+
+  track.addEventListener('touchmove', (e) => {
+    const dx = e.touches[0].pageX - startX;
+    currentX = Math.max(-(getMaxScroll()), Math.min(0, scrollLeft + dx));
+    track.style.transform = `translateX(${currentX}px)`;
+    updateProgress();
+  });
+
+  updateProgress();
+</script>

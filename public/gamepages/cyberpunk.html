@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk 2077 - GameKnight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 0, 0.8); }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        html, body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            background: #0a0e27;
+            color: #fff;
+        }
+
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            padding-top: 100px;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+        }
+
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 15px 40px;
+            border-radius: 30px;
+            background: rgba(255, 255, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.2);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .list {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #ffff00;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .link:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .mutebtn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .img1 {
+            height: 30px;
+            width: auto;
+            filter: brightness(1.2);
+        }
+
+        #panel {
+            position: relative;
+            padding: 40px;
+            margin-top: 100vh;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 0.8fr 3fr 0.8fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .left, .right, .right-right {
+            border-radius: 20px;
+            background: rgba(255, 255, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 0, 0.2);
+            box-shadow: 0 4px 30px rgba(255, 255, 0, 0.1);
+            padding: 30px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .left {
+            animation-delay: 0s;
+        }
+
+        .right {
+            animation-delay: 0.3s;
+        }
+
+        .right-right {
+            animation-delay: 0.6s;
+        }
+
+        .mainimg1 {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .mainimg1:hover {
+            transform: scale(1.05);
+        }
+
+        .title {
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 0, 0.1) 50%, transparent 100%);
+            border-bottom: 2px solid rgba(255, 255, 0, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .title h1, .title h2 {
+            font-family: 'Cinzel', serif;
+            color: #ffff00;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        p {
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .linktable {
+            background: rgba(255, 255, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .linktable div {
+            border: 2px solid rgba(255, 255, 0, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .linktable div:hover {
+            background: rgba(255, 255, 0, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 0, 0.3);
+            border-color: rgba(255, 255, 0, 0.8);
+        }
+
+        .linktable p {
+            margin: 0;
+        }
+
+        .sim-games {
+            background: rgba(255, 255, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .sim-games div {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sim-games div:hover {
+            background: rgba(255, 255, 0, 0.1);
+            transform: translateX(10px);
+        }
+
+        .sim-img {
+            width: 60px;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 0, 0.3);
+        }
+
+        .sim-games p {
+            margin: 0;
+            flex: 1;
+        }
+
+        .content {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .official-download {
+            background: rgba(255, 255, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .official-download img {
+            width: 80px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        #official-link {
+            border: 2px solid rgba(255, 255, 0, 0.5);
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 0, 0.15);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 255, 0, 0.3);
+            border-color: rgba(255, 255, 0, 0.8);
+        }
+
+        .system-req {
+            background: rgba(255, 255, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .min, .rec {
+            text-align: center;
+            flex: 1;
+        }
+
+        .system-req .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .min h2, .rec h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ffff00;
+        }
+
+        .min p, .rec p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .game-features {
+            margin: 30px 0;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.4s forwards;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 0, 0.08);
+            border: 1px solid rgba(255, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 0, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 0, 0.5);
+        }
+
+        .feature-item strong {
+            color: #ffff00;
+        }
+
+        .mainimg2 {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 0, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                top: 10px;
+                padding: 10px 20px;
+            }
+
+            .list {
+                gap: 15px;
+            }
+
+            .link {
+                font-size: 0.85rem;
+            }
+
+            .title h1, .title h2 {
+                font-size: 1.3rem;
+                letter-spacing: 3px;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-vid">
+        <source src="https://media.giphy.com/media/3oKIPnIiHoKDJXa2Vy/giphy.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="/" class="link">HOME</a></li>
+            <li><a href="/browse" class="link">BROWSE</a></li>
+            <li><a href="/store" class="link">STORE</a></li>
+            <li><button onclick="toggleSound()" class="mutebtn"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffff00'%3E%3Cpath d='M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm3.5 9c0 1.93-1.57 3.5-3.5 3.5S8.5 13.93 8.5 12 10.07 8.5 12 8.5s3.5 1.57 3.5 3.5z'/%3E%3C/svg%3E" class="img1" alt="Sound"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="https://images.unsplash.com/photo-1538481143235-7e54c755b9ca?w=400&q=80" alt="Cyberpunk 2077" class="mainimg1">
+
+                <div class="linktable">
+                    <div>
+                        <p>📺 <a href="https://www.youtube.com/watch?v=QrAftUG4BEo" class="link" target="_blank">GAMEPLAY WALKTHROUGH</a></p>
+                    </div>
+                    <div>
+                        <p>🎮 <a href="https://www.cyberpunk.net/" class="link" target="_blank">OFFICIAL STORE</a></p>
+                    </div>
+                    <div>
+                        <p>📖 <a href="https://en.wikipedia.org/wiki/Cyberpunk_2077" class="link" target="_blank">WIKIPEDIA</a></p>
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>SIMILAR GAMES</h1>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=60&q=80" class="sim-img" alt="Witcher 3">
+                        <p>The Witcher 3</p>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1535016120754-e51c14221e33?w=60&q=80" class="sim-img" alt="Fallout">
+                        <p>Fallout 4</p>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1583772634048-b923ef6dc202?w=60&q=80" class="sim-img" alt="Mass Effect">
+                        <p>Mass Effect Andromeda</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="title">
+                    <h1>CYBERPUNK 2077</h1>
+                </div>
+
+                <div class="content">
+                    <div>
+                        <h2 style="color: #ffff00; margin-bottom: 10px;">OVERVIEW</h2>
+                        <p>Cyberpunk 2077 is an immersive action-RPG set in the dystopian metropolis of Night City. You play as V, a mercenary customizable in appearance, abilities, and playstyle. Rise through the ranks of the futuristic underground while confronting a rogue AI that threatens your existence. Explore vast, detailed environments filled with quests, dangers, and opportunities. Choose your path: corpo, street kid, or nomad. Experience a narrative-driven world where your choices shape the outcome of multiple branching storylines.</p>
+                    </div>
+                </div>
+
+                <div class="game-features">
+                    <h2 style="color: #ffff00; margin-bottom: 15px; font-family: 'Cinzel', serif;">KEY FEATURES</h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <strong>⚔️ Combat System</strong>
+                            <p>Blend tactical gunplay with cyber enhancements for diverse combat approaches</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>🏙️ Night City</strong>
+                            <p>Expansive open world with 6 distinct districts, each with unique aesthetics</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>🧠 Cybernetics</strong>
+                            <p>Upgrade your body with advanced tech to unlock new abilities and playstyles</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>🎭 Branching Stories</strong>
+                            <p>Multiple dialogue choices and quest outcomes create unique playthroughs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div>
+                        <h2 style="color: #ffff00; margin-bottom: 10px; font-family: 'Cinzel', serif;">PLOT</h2>
+                        <p>In the year 2077, the world is controlled by megacorporations. You're a street mercenary hired to steal a prototype of consciousness digitization technology. The job goes wrong when the data gets encoded into your neural implant alongside an AI of a legendary rockerboy terrorist. Now you have 6 months to live before the AI overwrites your consciousness. Navigate the neon-soaked streets, forge unlikely alliances, and uncover the truth behind the AI that's literally in your head. Your choices will determine whether you achieve immortality or face oblivion.</p>
+                    </div>
+                </div>
+
+                <div class="trailervid">
+                    <iframe src="https://www.youtube.com/embed/QrAftUG4BEo" title="Cyberpunk 2077 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="right-right">
+                <div class="official-download">
+                    <img src="https://images.unsplash.com/photo-1555548336-c6c86cebd378?w=80&q=80" alt="CD Project Red">
+                    <div id="official-link">
+                        <p style="margin-bottom: 0;">🎮 GET IT NOW</p>
+                        <a href="https://www.cyberpunk.net/" class="link" target="_blank" style="display: block; margin-top: 10px;">VISIT OFFICIAL STORE</a>
+                    </div>
+                </div>
+
+                <div class="system-req">
+                    <div class="title">
+                        <h1>SYSTEM REQUIREMENTS</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>MINIMUM</h2>
+                            <p><strong>OS:</strong> Windows 10</p>
+                            <p><strong>CPU:</strong> i5-8400 / R5 3300X</p>
+                            <p><strong>RAM:</strong> 12 GB</p>
+                            <p><strong>GPU:</strong> GTX 1060 3GB / RX 580</p>
+                            <p><strong>Storage:</strong> 160 GB SSD</p>
+                        </div>
+                        <div class="rec">
+                            <h2>RECOMMENDED</h2>
+                            <p><strong>OS:</strong> Windows 10/11</p>
+                            <p><strong>CPU:</strong> i7-12700K / R7 5800X3D</p>
+                            <p><strong>RAM:</strong> 20 GB</p>
+                            <p><strong>GPU:</strong> RTX 3080 / RX 6800 XT</p>
+                            <p><strong>Storage:</strong> 160 GB SSD</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 255, 0, 0.05); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 0, 0.3); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>📊 RELEASE INFO</strong></p>
+                    <p style="margin: 5px 0;"><strong>Release:</strong> December 10, 2020</p>
+                    <p style="margin: 5px 0;"><strong>Rating:</strong> 8.5/10</p>
+                    <p style="margin: 5px 0;"><strong>Platforms:</strong> PC, PS5, XSX/S</p>
+                    <p style="margin: 5px 0;"><strong>Genre:</strong> Action RPG</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleSound() {
+            const video = document.getElementById('bg-vid');
+            video.muted = !video.muted;
+        }
+
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.in-view-element');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.75) {
+                    el.style.animation = 'fadeupin 1.2s ease-out forwards';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

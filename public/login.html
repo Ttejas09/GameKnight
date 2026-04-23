@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Login page for Game Store." />
+    <link rel="apple-touch-icon" href="./logo192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/login.css" />
+    <title>Login | GameKnight</title>
+  </head>
+  <body>
+    <div class="auth-bg" aria-hidden="true">
+      <video class="auth-bg-video" autoplay muted loop playsinline>
+        <source src="./assets/hero/sekiro-rumbling.mp4" type="video/mp4" />
+      </video>
+      <div class="auth-bg-overlay"></div>
+    </div>
+
+    <nav class="nav-shell nav-animate-in" aria-label="Main Navigation">
+      <div class="nav-left">
+        <a class="nav-brand nav-link" href="index.html" aria-label="Go to home">
+          <img class="nav-icon nav-logo" src="./assets/icons/logo.svg" alt="" />
+          <span>GameKnight</span>
+        </a>
+
+        <div class="nav-route">
+          <a class="nav-link nav-browse" href="browse.html" aria-label="Browse store">
+            <img class="nav-icon" src="./assets/icons/browse.svg" alt="" />
+            <span>Browse Store</span>
+          </a>
+
+          <form class="nav-search" id="nav-search-form" action="browse.html" method="get" role="search">
+            <label class="nav-visually-hidden" for="nav-search-input">Search games</label>
+            <input
+              class="nav-search-input"
+              id="nav-search-input"
+              name="q"
+              type="search"
+              placeholder="Search games..."
+              autocomplete="off"
+            />
+            <button class="nav-search-btn nav-link" type="submit" aria-label="Submit search">
+              <img class="nav-icon" src="./assets/icons/search.svg" alt="" />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <a
+          class="nav-link nav-github"
+          href="https://github.com/Ttejas09"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open GitHub profile"
+        >
+          <img class="nav-icon nav-github-icon" src="./assets/icons/github.svg" alt="" />
+          <span>TejasTajane</span>
+        </a>
+
+        <a class="nav-link nav-login" href="login.html" aria-label="Open login page">Login</a>
+
+        <button class="nav-cart nav-link" id="nav-cart-btn" type="button" aria-label="Open cart">
+          <img class="nav-icon nav-cart-icon" src="./assets/icons/cart.svg" alt="" />
+          <span>Cart: <span id="cart-count">0</span></span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="login-page" aria-live="polite">
+      <section class="login-shell" aria-label="Login form">
+        <aside class="login-promo">
+          <p class="login-eyebrow">Welcome Back</p>
+          <h1 class="login-title">Sign in to continue your adventure</h1>
+          <p class="login-copy">
+            Track your wishlist, manage your cart faster, and get notified when your favorite titles go on sale.
+          </p>
+          <ul class="login-perks">
+            <li>Personalized recommendations</li>
+            <li>Saved checkout details</li>
+            <li>Instant order updates</li>
+          </ul>
+        </aside>
+
+        <article class="login-card">
+          <h2 class="login-card-title">Login</h2>
+          <p class="login-card-subtitle">Use your Game Store account credentials.</p>
+
+          <form class="login-form" id="login-form" novalidate>
+            <label class="login-label" for="login-email">Email</label>
+            <input class="login-input" id="login-email" name="email" type="email" required placeholder="you@example.com" />
+
+            <label class="login-label" for="login-password">Password</label>
+            <input class="login-input" id="login-password" name="password" type="password" required placeholder="Enter your password" />
+
+            <div class="login-row">
+              <label class="login-check-wrap">
+                <input type="checkbox" name="remember" />
+                <span>Remember me</span>
+              </label>
+              <a class="login-link" href="#">Forgot password?</a>
+            </div>
+
+            <button class="login-submit" type="submit">Sign In</button>
+          </form>
+
+          <p class="login-status" id="login-status" aria-live="polite"></p>
+
+          <p class="login-signup-note">New here? <a class="login-link" href="signup.html">Create an account</a></p>
+        </article>
+      </section>
+    </main>
+
+    <script src="./js/navbar.js"></script>
+    <script src="./js/login.js"></script>
+  </body>
+</html>

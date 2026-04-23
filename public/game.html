@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Game detail page for the Vanilla JS multi-page store."
+    />
+    <link rel="apple-touch-icon" href="./logo192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/footer.css" />
+    <link rel="stylesheet" href="./css/store.css" />
+    <title>Game Details | GameKnight</title>
+  </head>
+  <body>
+    <nav class="nav-shell nav-animate-in" aria-label="Main Navigation">
+      <div class="nav-left">
+        <a class="nav-brand nav-link" href="index.html" aria-label="Go to home">
+          <img class="nav-icon nav-logo" src="./assets/icons/logo.svg" alt="" />
+          <span>GameKnight</span>
+        </a>
+
+        <div class="nav-route">
+          <a class="nav-link nav-browse" href="browse.html" aria-label="Browse store">
+            <img class="nav-icon" src="./assets/icons/browse.svg" alt="" />
+            <span>Browse Store</span>
+          </a>
+
+          <form class="nav-search" id="nav-search-form" action="browse.html" method="get" role="search">
+            <label class="nav-visually-hidden" for="nav-search-input">Search games</label>
+            <input
+              class="nav-search-input"
+              id="nav-search-input"
+              name="q"
+              type="search"
+              placeholder="Search games..."
+              autocomplete="off"
+            />
+            <button class="nav-search-btn nav-link" type="submit" aria-label="Submit search">
+              <img class="nav-icon" src="./assets/icons/search.svg" alt="" />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <a
+          class="nav-link nav-github"
+          href="https://github.com/Ttejas09"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open GitHub profile"
+        >
+          <img class="nav-icon nav-github-icon" src="./assets/icons/github.svg" alt="" />
+          <span>TejasTajane</span>
+        </a>
+
+        <a class="nav-link nav-login" href="login.html" aria-label="Open login page">Login</a>
+
+        <button class="nav-cart nav-link" id="nav-cart-btn" type="button" aria-label="Open cart">
+          <img class="nav-icon nav-cart-icon" src="./assets/icons/cart.svg" alt="" />
+          <span>Cart: <span id="cart-count">0</span></span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="game-detail-page" id="game-detail-page" aria-live="polite">
+      <section class="game-detail-shell" id="game-detail-shell">
+        <div class="game-detail-media-wrap">
+          <img
+            class="game-detail-cover"
+            id="game-detail-cover"
+            src="./assets/hero/placeholder.jpg"
+            alt="Game cover"
+          />
+        </div>
+
+        <article class="game-detail-content">
+          <p class="game-detail-eyebrow">Game Details</p>
+          <h1 class="game-detail-title" id="game-detail-title">Loading game...</h1>
+          <p class="game-detail-price" id="game-detail-price">$0.00</p>
+
+          <dl class="game-detail-meta">
+            <div class="game-detail-meta-row">
+              <dt>Genre</dt>
+              <dd id="game-detail-genre">-</dd>
+            </div>
+            <div class="game-detail-meta-row">
+              <dt>Release</dt>
+              <dd id="game-detail-release">-</dd>
+            </div>
+            <div class="game-detail-meta-row">
+              <dt>Platforms</dt>
+              <dd id="game-detail-platforms">-</dd>
+            </div>
+            <div class="game-detail-meta-row">
+              <dt>Rating</dt>
+              <dd id="game-detail-rating">-</dd>
+            </div>
+          </dl>
+
+          <p class="game-detail-description" id="game-detail-description">
+            Placeholder description for selected game.
+          </p>
+
+          <div class="game-detail-actions">
+            <button class="game-detail-btn" id="game-detail-add-btn" type="button">
+              Add to Cart
+            </button>
+            <a class="game-detail-link" href="browse.html">Back to Browse</a>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer-wrap" aria-label="Site Footer">
+      <div class="footer-top">
+        <img class="footer-logo" src="./assets/icons/logo.svg" alt="" />
+        <h2 class="footer-brand">GameKnight</h2>
+      </div>
+
+      <div class="footer-columns">
+        <section class="footer-col" aria-label="Company links">
+          <h3 class="footer-col-title">Company</h3>
+          <ul class="footer-col-list">
+            <li><a class="footer-link" href="about.html">About</a></li>
+            <li><a class="footer-link" href="press.html">Press Center</a></li>
+            <li><a class="footer-link" href="careers.html">Careers</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-col" aria-label="Console links">
+          <h3 class="footer-col-title">Consoles</h3>
+          <ul class="footer-col-list">
+            <li><a class="footer-link" href="browse.html?platform=playstation-5">PlayStation 5</a></li>
+            <li><a class="footer-link" href="browse.html?platform=xbox-one">Xbox One</a></li>
+            <li><a class="footer-link" href="browse.html?platform=switch">Switch</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-col" aria-label="Resource links">
+          <h3 class="footer-col-title">Resources</h3>
+          <ul class="footer-col-list">
+            <li><a class="footer-link" href="help.html">Help Center</a></li>
+            <li><a class="footer-link" href="contact.html">Contact</a></li>
+          </ul>
+        </section>
+
+        <section class="footer-col" aria-label="Product help links">
+          <h3 class="footer-col-title">Product Help</h3>
+          <ul class="footer-col-list">
+            <li><a class="footer-link" href="support.html">Support</a></li>
+            <li><a class="footer-link" href="bugs.html">File a Bug</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="footer-info">
+        <div>
+          <p class="footer-note">This page was built by Gianluca Jahn with Vanilla JS, HTML, and CSS.</p>
+          <p class="footer-note">
+            Portions of this page are inspired by
+            <a class="footer-note-link" href="https://rawg.io" target="_blank" rel="noreferrer">RAWG, RAWG.io</a>.
+            This page was built solely for educational purposes.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./js/navbar.js"></script>
+    <script src="./js/games.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

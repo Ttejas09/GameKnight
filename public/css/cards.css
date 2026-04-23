@@ -1,0 +1,202 @@
+.game-grid-section {
+  padding: 6.5rem 2rem 3rem;
+  background: #0f1011;
+}
+
+.section-title {
+  margin: 0 0 1.5rem;
+  color: #ffffff;
+  font: 700 1.75rem/1.2 "GT Bold", "Segoe UI", sans-serif;
+}
+
+.browse-filter-shell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  align-items: flex-end;
+}
+
+.browse-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.browse-filter-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+}
+
+.browse-filter-select {
+  background: #18181b;
+  color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.6rem 2.2rem 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  min-width: 180px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2371717a' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+.browse-filter-select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.browse-filter-select:focus {
+  outline: none;
+  border-color: #7ef7cf;
+  box-shadow: 0 0 0 2px rgba(126, 247, 207, 0.1);
+}
+
+.browse-filter-clear {
+  background: #27272a;
+  color: #f4f4f5;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 38px;
+}
+
+.browse-filter-clear:hover {
+  background: #3f3f46;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.game-card-root {
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(180deg, #1b1b1f 0%, #141418 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  color: #f4f4f5;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
+.game-card-root:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.55);
+}
+
+.game-card-media-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.game-card-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.game-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #0f1112;
+  background: #7ef7cf;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+
+.game-card-body {
+  padding: 14px 14px 16px;
+}
+
+.game-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.game-card-subtitle {
+  margin: 6px 0 12px;
+  font-size: 0.86rem;
+  color: #a8acb3;
+}
+
+.game-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.game-card-rating {
+  font-size: 0.82rem;
+  color: #c4c8ce;
+}
+
+.game-card-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #7ef7cf;
+}
+
+.game-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.game-card-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.game-card-btn-primary {
+  color: #0f1112;
+  background: #7ef7cf;
+}
+
+.game-card-btn-primary:hover {
+  filter: brightness(1.04);
+}
+
+.game-card-btn-ghost {
+  color: #f4f4f5;
+  background: #2a2a30;
+}
+
+.game-card-btn-ghost:hover {
+  background: #34343b;
+}

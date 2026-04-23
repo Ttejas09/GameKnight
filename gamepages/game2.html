@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html,
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        p {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .title h1,
+        .title h2,
+        .sim-games h1,
+        .system-req h1 {
+            font-family: 'Cinzel', serif;
+            color: #ebd79b;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(235, 215, 155, 0.4),
+                0 0 20px rgba(235, 215, 155, 0.2);
+        }
+
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            will-change: filter;
+            /* ADD THIS LINE */
+            transform: translateZ(0);
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .list {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+            color: white;
+            text-align: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 30px;
+            border-radius: 30px;
+            align-items: center;
+
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #img1 {
+            height: 30px;
+            width: auto;
+            background: none;
+        }
+
+        #mainimg1 {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 50px;
+            border-radius: 12px;
+        }
+
+
+        #panel {
+            position: relative;
+            /* backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(0, 0, 0, 0.6); */
+            background: none;
+            padding: 20px;
+            margin-top: 100vh;
+            min-height: 400vh;
+            display: flex;
+        }
+
+        .right {
+            color: white;
+            gap: 20px;
+            border: 1px solid white;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        .info-section {
+            display: flex;
+            gap: 40px;
+        }
+
+        .title {
+            border: 1px solid white;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            /* border-radius: 20px; */
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+
+            /* Remove the solid white box */
+            border: none;
+
+            /* Add a glowing golden underline */
+            border-bottom: 2px solid rgba(235, 215, 155, 0.5);
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+            border-radius: 0;
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        #mainimg2 {
+            height: 300px;
+            width: auto;
+            gap: 20px;
+        }
+
+        .link {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .link:hover {
+            color: #ebd79b;
+        }
+
+        .linktable {
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 1;
+
+            margin-bottom: 50px;
+        }
+
+        .sim-games div {
+            display: flex;
+            padding: 10px;
+        }
+
+        .linktable div {
+            border: 1px white solid;
+            border-radius: 20px;
+        }
+
+        .linktable div :hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 200px;
+            width: 100%;
+            ;
+        }
+
+        .trailervid video {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .right-right {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .official-download {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            border-radius: 20px;
+
+            opacity: 1;
+            margin-bottom: 70px;
+        }
+
+        #official-link {
+            height: 50px;
+            border: solid white 1px;
+            color: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .linktable.in-view {
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .official-download.in-view {
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .right.in-view {
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .system-req.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+
+        }
+
+        .sim-games.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .system-req {
+            color: white;
+            text-align: center;
+
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+
+        }
+
+        .sim-games {
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        .sim-games h1 {
+            text-align: center;
+            margin: 0;
+            width: 100%;
+            /* Optional: Removes extra default spacing so it sits perfectly in the middle of the box */
+        }
+
+        .sim-img {
+            width: 50px;
+            height: auto;
+        }
+
+        .min {
+            text-align: center;
+            width: 50%;
+        }
+
+        .rec {
+            text-align: center;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-vid">
+        <source src="media/SUBNAUTICA [EDIT]_1080p60.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="#" class="link">about</a></li>
+            <li><a href="#" class="link">home </a></li>
+            <li><a href="#" class="link">categories</a></li>
+            <li><a href="#" class="link">knightbot</a></li>
+            <li><a href="#" class="link">coms-hub</a></li>
+
+            <li><button onclick="sound()" id="mutebtn"><img src="media/1818835-200.png" id="img1"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="media/subnautica1.png" id="mainimg1"><br><br><br>
+
+                <div class="linktable">
+                    <div>
+                        <p>walkthrough:<a
+                                href="https://youtube.com/playlist?list=PLwiTZDxPg_I0ITKCZTF7S75RsQq_YEFgU&si=t2goqug4CFfotkpQ"
+                                class="link">click
+                                here</a></p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>download link:<a href="download" class="link">click here</a></p>
+                        <p>(unofficial)</p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>wikipidia:<a href="https://en.wikipedia.org/wiki/Subnautica" class="link">click here</a></p>
+
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>similar games </h1>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/subnautica1.png">
+                        </div>
+                        <div class="r1">
+                            <p>subnautica</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/rust1.jpg">
+                        </div>
+                        <div class="r1">
+                            <p>rust</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 3</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="title">
+                    <h1>OVERVIEW</h1>
+                </div>
+                <div>
+                    <p>Subnautica is a 2018 action-adventure survival game developed and published by Unknown Worlds
+                        Entertainment. The player controls Ryley Robinson, a survivor of a spaceship crash on an alien
+                        oceanic planet, which they are free to explore. The main objectives are to find essential
+                        resources, survive the local flora and fauna, and find a way to escape the planet.
+
+                        Subnautica was released in early access for Windows in December 2014, macOS in June 2015, and
+                        Xbox One in May 2016. The game was released out of early access in January 2018 for macOS and
+                        Windows, with versions for PlayStation 4 and Xbox One in December 2018. The physical console
+                        versions were published by Gearbox Publishing. The Nintendo Switch, PlayStation 5, and Xbox
+                        Series X/S versions were released in May 2021, A Nintendo Switch 2 version was released in
+                        February 2026. It received generally positive reviews from critics and sold over 5 million
+                        copies by January 2020.[1]</p>
+
+                </div>
+
+                <div class="title">
+                    <h1>PLOT</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <p>~1,000 years prior to the game's events, an alien race ("the Architects") begins
+                            investigation of the ocean planet 4546B for a cure to a disease, Kharaa, which has
+                            devastated their civilization. They discover that the Sea Emperor Leviathan species
+                            naturally produces a cure, "Enzyme 42," in their digestive tract. Unfortunately, the only
+                            remaining organism belonging to the species is too old to produce the enzyme in sufficient
+                            quantities, and attempts to force its eggs to hatch (to extract the enzyme from her young)
+                            are unsuccessful. With the situation worsening, and a containment breach inadvertently
+                            infecting the entire ocean with Kharaa, the Architects place 4546B under automated
+                            quarantine and abandon the planet.</p>
+
+                        <p> Centuries later, the spaceship Degasi crashes on 4546B while scanning it for minerals. Three
+                            of its crew survive for an unspecified amount of time on the planet, though all have either
+                            died or left the area by the time the game's events start. 10 years later, the Alterra
+                            Corporation's spaceship Aurora crash-lands on 4546B while attempting to locate the wreck of
+                            Degasi. The player-character Ryley Robinson is one of many Aurora crew to eject in escape
+                            pods; knocked unconscious during atmospheric entry, he is the only one left alive by the
+                            time he wakes up. He is contacted by the trading ship Sunbeam, responding to the Aurora's
+                            SOS. When the Sunbeam attempts to rescue Ryley, it is shot down by an enormous alien weapon.
+                        </p>
+                    </div>
+                    <div class="r1">
+                        <img src="subnautica2.jpg" id="mainimg2">
+                    </div>
+                </div>
+                <div class="title">
+                    <h1>Development and release</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <img src="subnautica2.jpg" id="mainimg2">
+                    </div>
+                    <div class="r1">
+                        <p>Subnautica was announced by Unknown Worlds Entertainment on December 17, 2013,[2] with
+                            Charlie Cleveland as the director and lead gameplay programmer, and Hugh Jeremy as the
+                            producer.[6] The music is composed by Simon Chylinski.[7]
+
+                            Cleveland was heavily inspired by Minecraft, which he noted "transformed the game industry"
+                            and "threw away all traditional challenge oriented and progression oriented games". The
+                            release of Minecraft overlapped with Unknown Worlds releasing Natural Selection 2. Feeling
+                            exhausted, the team wanted to try something new and decided to make such a game.[8] Other
+                            influences included scuba diving, the filmography of James Cameron, and "just the feeling of
+                            exploring the deep, dark, alternately beautiful and terrible, ocean depths. Feeling like I’m
+                            an explorer, almost an astronaut, not knowing what I’ll find".[9] Cleveland did not
+                            initially view it as a survival game but as an exploration game.[9] The team was also
+                            motivated by the Sandy Hook school shooting to make a non-violent game without guns.[10]
+
+                        </p>
+                    </div>
+                </div>
+                <div class="trailervid">
+                    <iframe width="800" height="450" src="https://youtube.com/embed/Rz2SNm8VguE?si=6Uvz48pKBnqHjJHk"
+                        title="minecraft Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+            <div class="right-right">
+                <div class="official-download">
+                    <div>
+                        <img src="cropped_circle_image (2).png">
+                    </div>
+                    <div id="official-link">OFFICIAL DOWNLOAD LINK:<a
+                            href="https://store.steampowered.com/app/264710/Subnautica/" class="link"> download</a>
+                    </div>
+
+                </div>
+                <div class="system-req">
+                    <div class="title">
+                        <h1>system requirements</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>minimum </h2>
+                            <p>OS:<br><br> Windows Vista SP2 or newer (64-bit)</p>
+                            <p>Processor:<br><br> Intel Haswell 2 cores / 4 threads @ 2.5GHz or equivalent</p>
+                            <p>Memory:<br><br> 4 GB RAM</p>
+                            <p>Graphics:<br><br> Intel HD 4600 or equivalent</p>
+                            <p>Storage:<br><br> 20 GB available space</p>
+
+                        </div>
+                        <div class="rec">
+                            <h2>recommended</h2>
+                            <p>OS:<br><br> Windows 10 (64-bit)</p>
+
+                            <p>Processor:<br><br> Intel Core i5 or AMD Ryzen 5</p>
+
+                            <p>Memory:<br><br> 8 GB RAM</p>
+
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 970 or AMD Radeon R9 290</p>
+
+                            <p>Storage:<br><br> 20 GB available space (SSD recommended)</p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        function sound() {
+            const bgsound = document.getElementById("bg-vid");
+            const mutebtn = document.getElementById("mutebtn");
+
+
+            if (bgsound.muted == true) {
+                bgsound.muted = false;
+                mutebtn.innerHTML = `<img src="do-not-make-a-loud-noise-no-speaker-no-sound-icon-free-vector.jpg" id="img1">`;
+
+
+            }
+            else {
+                bgsound.muted = true;
+                mutebtn.innerHTML = `<img src="1818835-200.png" id="img1">`;
+            }
+        }
+
+        window.addEventListener("scroll", function () {
+
+            let scrollY = window.scrollY;
+            let blurAmount = Math.min(scrollY / 80, 10);
+
+            document.getElementById("bg-vid").style.filter =
+                "blur(" + blurAmount + "px)";
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2 // Triggers when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add the class that triggers the animation
+                        entry.target.classList.add("in-view");
+
+                        // Stop observing once the animation has triggered
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Target the elements we want to animate
+            const animatedElements = document.querySelectorAll('.right, .linktable, .official-download ,.system-req ,.sim-games');
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

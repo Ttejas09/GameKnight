@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html,
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            /* ✅ smooth scroll */
+        }
+
+        /* Hide scrollbar */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ✅ allow scrolling + navbar spacing */
+        body {
+            padding-top: 100px;
+            min-height: 200vh;
+            /* ✅ ensures scroll exists */
+        }
+
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .title h1,
+        .title h2,
+        .sim-games h1,
+        .system-req h1 {
+            font-family: 'Cinzel', serif;
+            color: #ebd79b;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(235, 215, 155, 0.4),
+                0 0 20px rgba(235, 215, 155, 0.2);
+        }
+
+        /* ✅ VIDEO HERO */
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            will-change: filter;
+            transform: translateZ(0);
+            pointer-events: none;
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .list {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+            color: white;
+            text-align: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 30px;
+            border-radius: 30px;
+            align-items: center;
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #img1 {
+            height: 30px;
+            width: auto;
+        }
+
+        #mainimg1 {
+            width: 320px;
+            /* ✅ slightly smaller */
+            height: auto;
+            margin-bottom: 50px;
+        }
+
+        /* ✅ KEY FIX: content appears AFTER video */
+        #panel {
+            position: relative;
+            padding: 20px;
+            margin-top: 100vh;
+            /* 🔥 critical for scroll-over-video */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* layout */
+        .info-section {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .left {
+            flex: 0.8;
+        }
+
+        .right {
+            flex: 3;
+            /* ✅ wider center */
+            color: white;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .right-right {
+            flex: 0.8;
+            width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            border: none;
+            border-bottom: 2px solid rgba(235, 215, 155, 0.5);
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        #mainimg2 {
+            height: 300px;
+            width: auto;
+        }
+
+        .link {
+            text-decoration: none;
+            color: white;
+            font-size: x-large;
+        }
+
+        .linktable {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+            margin-bottom: 50px;
+        }
+
+        .linktable div {
+            border: 1px white solid;
+            border-radius: 20px;
+        }
+
+        .linktable div:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 200px;
+            width: 100%;
+        }
+
+        .official-download {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+            margin-bottom: 70px;
+        }
+
+        #official-link {
+            border: solid white 1px;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* animations */
+        .linktable.in-view {
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .official-download.in-view {
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .right.in-view {
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .system-req.in-view,
+        .sim-games.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .system-req,
+        .sim-games {
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .sim-games div {
+            display: flex;
+            padding: 10px;
+        }
+
+        .sim-img {
+            width: 50px;
+        }
+
+        .min,
+        .rec {
+            text-align: center;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-vid">
+        <source src="../media/This is Minecraft (Distant Horizons 2.0)_1440p.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="/" class="link">home </a></li>
+            <li><a href="/category" class="link">categories</a></li>
+            <li><a href="#" class="link">knightbot</a></li>
+            <li><a href="/coms-hub" class="link">coms-hub</a></li>
+            <li><a href="/profile" class="link">profile</a></li>
+
+
+            <li><button onclick="sound()" id="mutebtn"><img src="media/1818835-200.png" id="img1"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="media/a73027901f88055aaa0fd1a9e25d36c7.jpg" id="mainimg1"><br><br><br>
+
+                <div class="linktable">
+                    <div>
+                        <p>walkthrough:<a
+                                href="https://youtube.com/playlist?list=PL8sMvj6qvvFnb0EbWIvMbUO2jsCzmfRv7&si=o6meONJp35RuU4gt"
+                                class="link">click
+                                here</a></p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>download link:<a href="download" class="link">click here</a></p>
+                        <p>(unofficial)</p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>wikipidia:<a href="https://en.wikipedia.org/wiki/Minecraft" class="link">click here</a></p>
+
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>similar games </h1>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/subnautica1.png">
+                        </div>
+                        <div class="r1">
+                            <p>subnautica</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/rust1.jpg">
+                        </div>
+                        <div class="r1">
+                            <p>rust </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 3</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="title">
+                    <h1>OVERVIEW</h1>
+                </div>
+                <div>
+                    <p>Minecraft is a sandbox game developed and published by Mojang Studios. Following its initial
+                        public alpha release in 2009, it was formally released in 2011 for personal computers. The game
+                        has since been ported to numerous platforms, including mobile devices and various video game
+                        consoles.
+                        In Minecraft, players explore a procedurally generated world with virtually infinite terrain
+                        made up of voxels (cubes). They can discover and extract raw materials, craft tools and items,
+                        build structures, fight hostile mobs, and cooperate with or compete against other players in
+                        multiplayer. The game's large community offers a wide variety of user-generated content, such as
+                        modifications, servers, player skins, texture packs, and custom maps, which add new game
+                        mechanics and possibilities.</p>
+
+                </div>
+
+                <div class="title">
+                    <h1>PLOT</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <p>Minecraft is a three-dimensional sandbox video game that has no required goals to accomplish,
+                            giving players a large amount of freedom in choosing how to play the game.[5] The game
+                            features an optional achievement system.[6] Gameplay is in the first-person perspective by
+                            default, but players have the option of third-person perspectives.[7] The game world is
+                            composed of rough 3D objects—mainly cubes, referred to as blocks—representing various
+                            materials, such as dirt, stone, ores, logs, water, and lava. The core gameplay revolves
+                            around picking up and placing these objects. These blocks are arranged in a voxel grid,
+                            while players can move freely around the world. Players can break, or mine, blocks and then
+                            place them elsewhere, enabling them to build things.[8] Very few blocks are affected by
+                            gravity, instead maintaining their voxel position in the air.[9]</p>
+
+                        <p> Players can also craft a wide variety of items, such as armor, which mitigates damage from
+                            attacks; weapons (such as swords or bows and arrows), which allow monsters and animals to be
+                            killed more easily; and tools (such as pickaxes or shovels), which break certain types of
+                            blocks more quickly. Some items have multiple tiers depending on the material used to craft
+                            them, with higher-tier items being more effective and durable. They may also freely craft
+                            helpful blocks—such as furnaces which can cook food and smelt ores,[10] and torches that
+                            produce light—or exchange items with villagers (NPC) through trading emeralds for different
+                            goods and vice versa.[11][12] The game has an inventory system, allowing players to carry a
+                            limited number of items.[13] The in-game time system follows a day and night cycle, with one
+                            full cycle lasting for 20 real-time minutes.[14] The game also contains a material called
+                            redstone, which can be used to make primitive mechanical devices, electrical circuits, and
+                            logic gates, allowing for the construction of many complex systems.[15][16]
+                        </p>
+                    </div>
+                    <div class="r1">
+                        <img src="media/minecraftgif.gif" id="mainimg2">
+                    </div>
+                </div>
+                <div class="title">
+                    <h1>Development and release</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <img src="media/minecraftgif.gif" id="mainimg2">
+                    </div>
+                    <div class="r1">
+                        <p>Before creating Minecraft, Markus "Notch" Persson was a game developer at King, where he
+                            worked until March 2009. At King, he primarily developed browser games and learned several
+                            programming languages. During his free time, he prototyped his own games, often drawing
+                            inspiration from other titles, and was an active participant on the TIGSource forums for
+                            independent developers.[103]
+
+                        </p>
+                    </div>
+                </div>
+                <div class="trailervid">
+                    <iframe width="800" height="450" src="https://youtube.com/embed/3ntfjZGgm04?si=IcMhH4cytKc_WfNL"
+                        title="minecraft Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+            <div class="right-right">
+                <div class="official-download">
+                    <div>
+                        <img src="media/cropped_circle_image (2).png">
+                    </div>
+                    <div id="official-link">OFFICIAL DOWNLOAD LINK:<a href="https://www.minecraft.net/en-us/download"
+                            class="link"> download</a>
+                    </div>
+
+                </div>
+                <div class="system-req">
+                    <div class="title">
+                        <h1>system requirements</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>minimum </h2>
+                            <p>OS:<br><br> Windows 7 or later (64-bit)</p>
+                            <p>Processor:<br><br> Intel Core i3-3210 or AMD A8-7600</p>
+                            <p>Memory:<br><br> 4 GB RAM</p>
+                            <p>Graphics:<br><br> Intel HD Graphics 4000 or AMD Radeon R5 series</p>
+                            <p>Storage:<br><br> 1 GB available space</p>
+
+                        </div>
+                        <div class="rec">
+                            <h2>recommended</h2>
+                            <p>OS:<br><br> Windows 10 or later (64-bit)</p>
+
+                            <p>Processor:<br><br> Intel Core i5-4690 or AMD A10-7800</p>
+
+                            <p>Memory:<br><br> 8 GB RAM</p>
+
+                            <p>Graphics:<br><br> Nvidia GeForce 700 Series or AMD Radeon Rx 200 Series</p>
+
+                            <p>Storage:<br><br> 4 GB available space (SSD recommended)</p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        function sound() {
+            const bgsound = document.getElementById("bg-vid");
+            const mutebtn = document.getElementById("mutebtn");
+
+
+            if (bgsound.muted == true) {
+                bgsound.muted = false;
+                mutebtn.innerHTML = `<img src="media/do-not-make-a-loud-noise-no-speaker-no-sound-icon-free-vector.jpg" id="img1">`;
+
+
+            }
+            else {
+                bgsound.muted = true;
+                mutebtn.innerHTML = `<img src="media/1818835-200.png" id="img1">`;
+            }
+        }
+
+        window.addEventListener("scroll", function () {
+
+            let scrollY = window.scrollY;
+            let blurAmount = Math.min(scrollY / 80, 10);
+
+            document.getElementById("bg-vid").style.filter =
+                "blur(" + blurAmount + "px)";
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2 // Triggers when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add the class that triggers the animation
+                        entry.target.classList.add("in-view");
+
+                        // Stop observing once the animation has triggered
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Target the elements we want to animate
+            const animatedElements = document.querySelectorAll('.right, .linktable, .official-download ,.system-req ,.sim-games');
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

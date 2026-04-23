@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outerwild</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <div class="navcontain">
+        <nav>
+            <ul class="navlist" type="none">
+                <li>ABOUT GAME</li>
+                <li>PRICE</li>
+                <li>SCREENSHOT</li>
+            </ul>
+            <button class="mute""><img src=" mute_6896807.png" width="50px"></button>
+        </nav>
+    </div>
+    <section class="hero" style="display: flex; justify-content: center;">
+        <video id="hero" autoplay loop muted>
+            <source src="OUTER WILD - can you hear the music [edit] - SCÈNE CULTE (1080p, h264).mp4" type="video/mp4"
+                style>
+        </video>
+        <div class="overlayed">
+            <h1 style="font-size: 50px;">OUTER WILDS</h1>
+        </div>
+        <div class="overlay">
+        </div>
+    </section>
+    <section class="data scrolled" style="z-index: 2;">
+        <div class="new" style="width: 80vw;">
+            <section class="about">
+                <h1 class="name">OUTER WILDS : </h1>
+                <ul class="navlist" type="none" style="width: auto;">
+                    <li>OVERVIEW</li>
+                </ul>
+                <div class="screenshots">
+                    <img>
+                    <img class="ss" src="Outerwild\Outer_Wilds_Steam_artwork.jpg">
+                    <!-- <img class ="ss" src="download.jpg">
+                    <img class ="ss" src="screen2.jpg"> -->
+                </div>
+                <div class="abt">
+                    <h3>Game: OUTER WILD</h3>
+                    <ul type="none">
+                        <li>Developer: Mobius Digital</li>
+                        <li>Release Year: 2019</li>
+                        <li>Platform: PC (Windows)
+                            Xbox One
+                            PlayStation 4
+                            PlayStation 5
+                            Xbox Series X/S
+                            Nintendo Switch</li>
+                    </ul>
+                    <div class="facts">
+                        <img class="pic1" src="outer-wilds-echoes-of-the-eye-pc-game-steam-cover.jpg"
+                            style=" margin-right: 30px;">
+                        <h3>The Game Simulates Everything at Once</h3>
+                        <p class="fact">Unlike many games, nothing “spawns” when you arrive.
+                            Every planet, collapse, and event is always happening in real time, even if you’re on the
+                            opposite side of the system.</p>
+
+                    </div>
+                    <div class="facts">
+                        <h3>Real Astrophysics Inspired the Mechanics</h3>
+                        <p class="fact">Concepts like black holes, gravity, and time dilation are simplified but
+                            inspired by real science, making exploration feel believable.</p>
+                    </div>
+                    <div class="facts">
+                        <img src="download.png" style="margin-right: 30px;" class="pic1">
+                        <div>
+                            <h3>It Rewards Curiosity Over Skill</h3>
+                            <p class="fact">If you're stuck, the solution is usually: “Go somewhere else and learn
+                                something new.” That’s by design.</p>
+
+                            <h3>It’s Designed Like a Giant Puzzle Box</h3>
+                            <p class="fact">Every planet is part of a single interconnected mystery.
+                                Clues on one planet often solve puzzles on a completely different one—so the “map” is
+                                actually a web of knowledge, not locations.</p>
+                        </div>
+                    </div>
+                    <div class="facts">
+                        <h3>Shortcuts Exist—but You Discover Them</h3>
+                        <p class="fact">As you learn the map, you realize there are faster ways to reach places that
+                            weren’t obvious at first.
+                            The map “unlocks” in your brain, not in the game.</p>
+                    </div>
+                </div>
+                <section class="right hidebox">
+                    <img src="Outer_Wilds_Steam_artwork.jpg" alt="logo" class="logo" width="200px" style="margin: 15px;">
+                    <button class="buy">BUY NOW</button>
+
+                    <h3 style="margin: -30px;"><img style="transform: translateY(+15px);"
+                            src="steam-logo-steam-icon-transparent-free-png.png" width="50px">STEAM :</h3>
+                    <div class="req-container">
+                        <div class="req-card">
+                            <h3>Minimum</h3>
+                            <ul class="req-list">
+                                <li><strong>OS:</strong> Windows XP, Vista, 7, 8, or 10</li>
+                                <li><strong>Memory:</strong> 2 GB RAM</li>
+                                <li><strong>Graphics:</strong> 128 MB</li>
+                                <li><strong>Storage:</strong> 200 MB available space</li>
+                            </ul>
+                        </div>
+
+                        <div class="req-card">
+                            <h3>Recommended</h3>
+                            <ul class="req-list">
+                                <li><strong>OS:</strong> Windows XP, Vista, 7, or 10</li>
+                                <li><strong>Processor:</strong> 2GHz+</li>
+                                <li><strong>Memory:</strong> 3 GB RAM</li>
+                                <li><strong>Graphics:</strong> 512 MB</li>
+                                <li><strong>Storage:</strong> 200 MB available space</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </section>
+    <section class="walkthrough">
+        <iframe width="50%" height="380px" src="https://www.youtube.com/embed/G1atkq4C1KU?si=qti1GUay5fuhDkUm"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </section>
+</body>
+<script>
+    const muteButton = document.getElementsByClassName('mute')[0]; // Use [0] to get the first element
+    const video = document.getElementById('hero');
+    muteButton.addEventListener('click', function () {
+        if (video.muted) {
+            video.muted = false;
+            muteButton.innerHTML = '<img src="loudspeaker_4407694.png" alt="Unmute" width="50px"/>';
+        } else {
+            video.muted = true;
+            muteButton.innerHTML = '<img src="mute_6896807.png" alt="Mute" width="50px" />';
+        }
+    });
+    const overlay = document.querySelector('.overlay');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                // Add blur to the overlay when the text comes into view
+                overlay.classList.add('blured');
+                document.querySelector('.navcontain').classList.add('hide');
+
+            } else {
+                // Remove blur from the OVERLAY (not entry.target) when it leaves
+                overlay.classList.remove('blured');
+                document.querySelector('.navcontain').classList.remove('hide');
+            }
+        });
+    });
+
+    observer.observe(document.querySelector('.new'));
+    const floatbox = document.querySelector('.right')
+    const rig = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                floatbox.classList.remove('hidebox');
+            }
+            else {
+                floatbox.classList.add('hidebox');
+            }
+        })
+    })
+    // Watch the '.new' paragraph
+    rig.observe(document.querySelector('.abt'))
+
+</script>
+
+</html>

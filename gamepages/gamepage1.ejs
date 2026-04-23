@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html,
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            /* ✅ smooth scroll */
+        }
+
+        /* Hide scrollbar */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ✅ allow scrolling + navbar spacing */
+        body {
+            padding-top: 100px;
+            min-height: 200vh;
+            /* ✅ ensures scroll exists */
+        }
+
+        p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .title h1,
+        .title h2,
+        .sim-games h1,
+        .system-req h1 {
+            font-family: 'Cinzel', serif;
+            color: #ebd79b;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(235, 215, 155, 0.4),
+                0 0 20px rgba(235, 215, 155, 0.2);
+        }
+
+        /* ✅ VIDEO HERO */
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            will-change: filter;
+            transform: translateZ(0);
+            pointer-events: none;
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .list {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+            color: white;
+            text-align: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 30px;
+            border-radius: 30px;
+            align-items: center;
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #img1 {
+            height: 30px;
+            width: auto;
+        }
+
+        #mainimg1 {
+            width: 320px;
+            /* ✅ slightly smaller */
+            height: auto;
+            margin-bottom: 50px;
+        }
+
+        /* ✅ KEY FIX: content appears AFTER video */
+        #panel {
+            position: relative;
+            padding: 20px;
+            margin-top: 100vh;
+            /* 🔥 critical for scroll-over-video */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* layout */
+        .info-section {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .left {
+            flex: 0.8;
+        }
+
+        .right {
+            flex: 3;
+            /* ✅ wider center */
+            color: white;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .right-right {
+            flex: 0.8;
+            width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            border: none;
+            border-bottom: 2px solid rgba(235, 215, 155, 0.5);
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        #mainimg2 {
+            height: 300px;
+            width: auto;
+        }
+
+        .link {
+            text-decoration: none;
+            color: white;
+            font-size: x-large;
+        }
+
+        .linktable {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+            margin-bottom: 50px;
+        }
+
+        .linktable div {
+            border: 1px white solid;
+            border-radius: 20px;
+        }
+
+        .linktable div:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 200px;
+            width: 100%;
+        }
+
+        .official-download {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+            margin-bottom: 70px;
+        }
+
+        #official-link {
+            border: solid white 1px;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* animations */
+        .linktable.in-view {
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .official-download.in-view {
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .right.in-view {
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .system-req.in-view,
+        .sim-games.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .system-req,
+        .sim-games {
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .sim-games div {
+            display: flex;
+            padding: 10px;
+        }
+
+        .sim-img {
+            width: 50px;
+        }
+
+        .min,
+        .rec {
+            text-align: center;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-vid">
+        <source src="media/AS I AWAITED  - Elden Ring EDIT 8K - NIGHTCROWLER_4320p60.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="/" class="link">home </a></li>
+            <li><a href="/category" class="link">categories</a></li>
+            <li><a href="#" class="link">knightbot</a></li>
+            <li><a href="/coms-hub" class="link">coms-hub</a></li>
+            <li><a href="/profile" class="link">profile</a></li>
+
+
+            <li><button onclick="sound()" id="mutebtn"><img src="media/1818835-200.png" id="img1"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="media/image2.webp" id="mainimg1"><br><br><br>
+
+                <div class="linktable">
+                    <div>
+                        <p>walkthrough:<a href="https://youtu.be/PN7YFKHOR9Y?si=6HrJN8IinYmgCaEi" class="link">click
+                                here</a></p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>download link:<a href="download" class="link">click here</a></p>
+                        <p>(unofficial)</p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>wikipidia:<a href="https://en.wikipedia.org/wiki/Elden_Ring" class="link">click here</a></p>
+
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>similar games </h1>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/img1.webp">
+                        </div>
+                        <div class="r1">
+                            <p>sekiro</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/img.1.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 1</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 3</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="title">
+                    <h1>OVERVIEW</h1>
+                </div>
+                <div>
+                    <p>Elden Ring takes place in the Lands Between, a fictional landmass ruled over by several demigods.
+                        It was previously ruled over by the immortal Queen Marika, who acted as keeper of the Elden
+                        Ring, a powerful force that manifested as the physical concept of order. When Marika eventually
+                        shattered the Elden Ring and disappeared, her demigod children began warring over pieces of the
+                        Ring in an event called the Shattering. Each demigod possesses a shard of the Ring called a
+                        Great Rune, which corrupts them with power. In the game, the player character is a Tarnished,
+                        one of a group of exiles from the Lands Between who are summoned back after the Shattering. As
+                        one of the Tarnished, the player must traverse the realm to repair the Elden Ring and become the
+                        Elden Lord.</p>
+
+                </div>
+
+                <div class="title">
+                    <h1>PLOT</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <p>Elden Ring
+                            Early on in their journey to repair the Elden Ring, the Tarnished encounters a Maiden named
+                            Melina. As the Tarnished is Maidenless, Melina offers to act as their Maiden, granting them
+                            the
+                            ability to turn runes into strength, as well as giving the Tarnished her steed Torrent. She
+                            does
+                            this under the condition that the Tarnished brings her to the Erdtree, the home of the Elden
+                            Ring. Melina later takes the Tarnished to the Roundtable Hold, a gathering place for other
+                            Tarnished seeking to repair the Elden Ring. The Hold's benefactor, the Two Fingers,
+                            instructs
+                            the Tarnished to collect the Great Runes and bring them to the Erdtree, where they can be
+                            used
+                            to repair the Elden Ring.</p>
+
+                        <p> The Tarnished proceeds to journey into the Lands Between, investigating its various locales
+                            and
+                            defeating the demigods. They soon recover enough Great Runes so that the Two Fingers allows
+                            them
+                            to battle Morgott the Grace-Given, the demigod guarding the Erdtree. As he dies, Morgott
+                            claims
+                            that the Erdtree will not allow anyone to enter it, making the Elden Ring irreparable. The
+                            Tarnished confirms this when they approach the Erdtree and find the interior blocked by a
+                            wall
+                            of thorns. Melina then arrives and advises that they journey to find the Flame of Ruin,
+                            which
+                            they can use to set the Erdtree on fire and burn away the thorns. The Tarnished is then free
+                            to
+                            journey towards the Flame of Ruin, or can search for a way to harness the equally powerful
+                            Frenzied Flame.
+                        </p>
+                    </div>
+                    <div class="r1">
+                        <img src="media/imag1.jpg" id="mainimg2">
+                    </div>
+                </div>
+                <div class="title">
+                    <h1>Development and release</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <img src="media/imag1.jpg" id="mainimg2">
+                    </div>
+                    <div class="r1">
+                        <p>Elden Ring is an action role-playing game set in third-person perspective. It includes
+                            elements that are similar to those in other FromSoftware-developed games, such as the Dark
+                            Souls series, Bloodborne, and Sekiro: Shadows Die Twice. The game is set in an open world;
+                            players can freely explore the Lands Between and its six main areas, which include
+                            Limgrave—an area of grassy plains and ancient ruins—and Caelid, a wasteland home to undead
+                            monsters.[2] The open world is explored using the character's mount Torrent as the main mode
+                            of transportation, though players may use fast travel outside combat. Throughout the game,
+                            players encounter non-player characters (NPCs) and enemies, including demigods who rule each
+                            main area and serve as the game's main bosses.[3][4] Aside from the main areas, Elden Ring
+                            has hidden dungeons, catacombs, tunnels, and caves where players can fight bosses and gather
+                            helpful items.[5]
+
+                        </p>
+                    </div>
+                </div>
+                <div class="trailervid">
+                    <iframe width="800" height="450" src="https://www.youtube.com/embed/E3Huy2cdih0?si=iKUM8r-_kQLQqb77"
+                        title="Elden Ring Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+            <div class="right-right">
+                <div class="official-download">
+                    <div>
+                        <img src="media/cropped_circle_image (2).png">
+                    </div>
+                    <div id="official-link">OFFICIAL DOWNLOAD LINK:<a
+                            href="https://store.steampowered.com/app/1245620/ELDEN_RING/" class="link"> download</a>
+                    </div>
+
+                </div>
+                <div class="system-req">
+                    <div class="title">
+                        <h1>system requirements</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>minimum </h2>
+                            <p>OS:<br><br> Windows 10 </p>
+                            <p>Processor:<br><br> Intel Core i5-8400 or AMD Ryzen 3 3300X
+                            </p>
+                            <p>Memory:<br><br> 12 GB RAM
+                            </p>
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 1060 (3GB) or AMD Radeon RX 580 (4GB)
+                            </p>
+                            <p> Storage:<br><br> 60 GB available space</p>
+
+
+                        </div>
+                        <div class="rec">
+                            <h2>recommended</h2>
+                            <p>OS:<br><br> Windows 10 or Windows 11</p>
+
+                            <p>Processor:<br><br> Intel Core i7-8700K or AMD Ryzen 5 3600X</p>
+
+                            <p>Memory:<br><br> 16 GB RAM</p>
+
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 1070 (8GB) or AMD Radeon RX Vega 56 (8GB)</p>
+
+                            <p>Storage:<br><br> 60 GB available space</p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        function sound() {
+            const bgsound = document.getElementById("bg-vid");
+            const mutebtn = document.getElementById("mutebtn");
+
+
+            if (bgsound.muted == true) {
+                bgsound.muted = false;
+                mutebtn.innerHTML = `<img src="media/do-not-make-a-loud-noise-no-speaker-no-sound-icon-free-vector.jpg" id="img1">`;
+
+
+            }
+            else {
+                bgsound.muted = true;
+                mutebtn.innerHTML = `<img src="media/1818835-200.png" id="img1">`;
+            }
+        }
+
+        window.addEventListener("scroll", function () {
+
+            let scrollY = window.scrollY;
+            let blurAmount = Math.min(scrollY / 80, 10);
+
+            document.getElementById("bg-vid").style.filter =
+                "blur(" + blurAmount + "px)";
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2 // Triggers when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add the class that triggers the animation
+                        entry.target.classList.add("in-view");
+
+                        // Stop observing once the animation has triggered
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Target the elements we want to animate
+            const animatedElements = document.querySelectorAll('.right, .linktable, .official-download ,.system-req ,.sim-games');
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

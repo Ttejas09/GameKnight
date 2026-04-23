@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAME NAME</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <div class="navcontain">
+        <nav>
+            <ul class="navlist" type="none">
+                <li>ABOUT GAME</li>
+                <li>PRICE</li>
+                <li>SCREENSHOT</li>
+            </ul>
+            <button class="mute""><img src=" mute_6896807.png" width="50px"></button>
+        </nav>
+    </div>
+    <section class="hero">
+        <video id="hero" autoplay loop muted>
+            <source src="LIMBO_2_Teaser_Trailer_720P.mp4 " type="video/mp4" style>
+        </video>
+        <div class="overlayed">
+            <h1 style="font-size: 50px;">LIMBO</h1>
+        </div>
+        <div class="overlay">
+        </div>
+    </section>
+    <section class="data scrolled" style="z-index: 2;">
+        <div class="new" style="width: 80vw;">
+            <section class="about">
+                <h1 class="name">LIMBO : </h1>
+                <ul class="navlist" type="none" style="width: auto;">
+                    <li>OVERVIEW</li>
+                </ul>
+                <div class="screenshots">
+                    <img>
+                    <img class="ss" src="cover.jpg">
+                    <!-- <img class ="ss" src="download.jpg">
+                    <img class ="ss" src="screen2.jpg"> -->
+                </div>
+                <div class="abt">
+                    <h3>Game: Limbo</h3>
+                    <ul type="none">
+                        <li>Developer: Playdead</li>
+                        <li>Release Year: 2010</li>
+                        <li>Platform: Xbox 360, PC, PlayStation, Nintendo Switch, Mobile</li>
+                    </ul>
+                    <div class="facts">
+                        <img src="images.jpg" style=" margin-right: 30px;">
+                        <h3>Developed by a Small Indie Team</h3>
+                        <p class="fact">Limbo was developed by the Danish indie game studio Playdead.
+                            The development team was very small, with about 8 developers, and the game took around 6
+                            years
+                            to complete.</p>
+                    </div>
+                    <div class="facts">
+                        <h3>A Story Without Dialogue</h3>
+                        <p class="fact">The game has no dialogue, no text explanations, and no narration.
+                            Players must understand the story through the environment and gameplay.</p>
+                    </div>
+                    <div class="facts">
+                        <img src="download (1).jpg" style="margin-right: 30px;">
+                        <h3>The Giant Spider Enemy</h3>
+                        <p class="fact">One of the most memorable parts of the game is the giant spider.
+                            The spider appears early in the game and creates intense puzzle and survival moments for
+                            players.</p>
+                    </div>
+                    <div class="facts">
+                        <h3>Searching for a Sister</h3>
+                        <p class="fact">In the game, the player controls a young boy searching for his sister in a
+                            strange
+                            and dangerous world.
+                            The meaning of the world and the ending is left open to interpretation.</p>
+                    </div>
+                </div>
+                <section class="right hidebox">
+                    <img src="egs-limbo-playdead-ic1-400x131-a4bd0dc89815.avif" alt="logo" class="logo" width="200px"
+                    style="margin: 15px;">
+                    <button class="buy">BUY NOW</button>
+                    
+                    <h3 style="margin: -30px;"><img style="transform: translateY(+15px);"
+                        src="steam-logo-steam-icon-transparent-free-png.png" width="50px">STEAM :</h3>
+                        <div class="req-container">
+                            <div class="req-card">
+                                <h3>Minimum</h3>
+                                <ul class="req-list">
+                                    <li><strong>OS:</strong> Windows XP, Vista, 7, 8, or 10</li>
+                                    <li><strong>Memory:</strong> 2 GB RAM</li>
+                                    <li><strong>Graphics:</strong> 128 MB</li>
+                                    <li><strong>Storage:</strong> 200 MB available space</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="req-card">
+                                <h3>Recommended</h3>
+                                <ul class="req-list">
+                                    <li><strong>OS:</strong> Windows XP, Vista, 7, or 10</li>
+                                    <li><strong>Processor:</strong> 2GHz+</li>
+                                    <li><strong>Memory:</strong> 3 GB RAM</li>
+                                    <li><strong>Graphics:</strong> 512 MB</li>
+                                    <li><strong>Storage:</strong> 200 MB available space</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                <section class="walkthrough">
+                    <iframe width="50%" height="380px"
+                        src="https://www.youtube.com/embed/uYy9iYtzcDg?si=EefMFyh0vRQtkNyB"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </section>
+
+        </div>
+    </section>
+</body>
+<script>
+    const muteButton = document.getElementsByClassName('mute')[0]; // Use [0] to get the first element
+    const video = document.getElementById('hero');
+    muteButton.addEventListener('click', function () {
+        if (video.muted) {
+            video.muted = false;
+            muteButton.innerHTML = '<img src="loudspeaker_4407694.png" alt="Unmute" width="50px"/>';
+        } else {
+            video.muted = true;
+            muteButton.innerHTML = '<img src="mute_6896807.png" alt="Mute" width="50px" />';
+        }
+    });
+    const overlay = document.querySelector('.overlay');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                // Add blur to the overlay when the text comes into view
+                overlay.classList.add('blured');
+                document.querySelector('.navcontain').classList.add('hide');
+
+            } else {
+                // Remove blur from the OVERLAY (not entry.target) when it leaves
+                overlay.classList.remove('blured');
+                document.querySelector('.navcontain').classList.remove('hide');
+            }
+        });
+    });
+
+    observer.observe(document.querySelector('.new'));
+    const floatbox = document.querySelector('.right')
+    const rig = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                floatbox.classList.remove('hidebox');
+            }
+            else {
+                floatbox.classList.add('hidebox');
+            }
+        })
+    })
+    // Watch the '.new' paragraph
+    rig.observe(document.querySelector('.abt'))
+
+</script>
+
+</html>

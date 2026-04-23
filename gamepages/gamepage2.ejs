@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html,
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        p {
+            color: white;
+            font-size: x-large;
+
+        }
+
+        .title h1,
+        .title h2,
+        .sim-games h1,
+        .system-req h1 {
+            font-family: 'Cinzel', serif;
+            color: #ebd79b;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(235, 215, 155, 0.4),
+                0 0 20px rgba(235, 215, 155, 0.2);
+        }
+
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            will-change: filter;
+            /* ADD THIS LINE */
+            transform: translateZ(0);
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .list {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+            color: white;
+            text-align: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 30px;
+            border-radius: 30px;
+            align-items: center;
+
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #img1 {
+            height: 30px;
+            width: auto;
+            background: none;
+        }
+
+        #mainimg1 {
+            width: 400px;
+            height: auto;
+
+            margin-bottom: 50px;
+        }
+
+
+        #panel {
+            position: relative;
+            /* backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(0, 0, 0, 0.6); */
+            background: none;
+            padding: 20px;
+            margin-top: 100vh;
+            min-height: 400vh;
+            display: flex;
+        }
+
+        .right {
+            color: white;
+            gap: 20px;
+            border: 1px solid white;
+            width: 900px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .info-section {
+            display: flex;
+            gap: 40px;
+        }
+
+        .title {
+            border: 1px solid white;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            /* border-radius: 20px; */
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+
+            /* Remove the solid white box */
+            border: none;
+
+            /* Add a glowing golden underline */
+            border-bottom: 2px solid rgba(235, 215, 155, 0.5);
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+            border-radius: 0;
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+        }
+
+        #mainimg2 {
+            height: 300px;
+            width: auto;
+            gap: 20px;
+        }
+
+        .link {
+            text-decoration: none;
+            color: white;
+            font-size: x-large;
+        }
+
+        .linktable {
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+
+            margin-bottom: 50px;
+        }
+
+        .sim-games div {
+            display: flex;
+            padding: 10px;
+        }
+
+        .linktable div {
+            border: 1px white solid;
+            border-radius: 20px;
+        }
+
+        .linktable div :hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 200px;
+            width: 100%;
+            ;
+        }
+
+        .trailervid video {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .right-right {
+            /* border: white 1px solid; */
+            width: 500px;
+            padding: 20px;
+            /* display: flex; */
+            /* flex-direction: row; */
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .official-download {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            border-radius: 20px;
+
+            opacity: 0;
+            margin-bottom: 70px;
+        }
+
+        #official-link {
+            height: 50px;
+            border: solid white 1px;
+            color: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+
+        }
+
+        #official-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .linktable.in-view {
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .official-download.in-view {
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .right.in-view {
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .system-req.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+
+        }
+
+        .sim-games.in-view {
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .system-req {
+            color: white;
+            text-align: center;
+
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+
+        }
+
+        .sim-games {
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+        }
+
+        .sim-games h1 {
+            text-align: center;
+            margin: 0;
+            width: 100%;
+            /* Optional: Removes extra default spacing so it sits perfectly in the middle of the box */
+        }
+
+        .sim-img {
+            width: 50px;
+            height: auto;
+        }
+
+        .min {
+            text-align: center;
+            width: 50%;
+        }
+
+        .rec {
+            text-align: center;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-vid">
+        <source src="media/If I lose it all, Sekiro! _ The Rumbling_1080p60.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="#" class="link">about</a></li>
+            <li><a href="#" class="link">home </a></li>
+            <li><a href="#" class="link">categories</a></li>
+            <li><a href="#" class="link">knightbot</a></li>
+            <li><a href="#" class="link">coms-hub</a></li>
+
+            <li><button onclick="sound()" id="mutebtn"><img src="media/1818835-200.png" id="img1"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="media/imgsekiro2.png" id="mainimg1"><br><br><br>
+
+                <div class="linktable">
+                    <div>
+                        <p>walkthrough:<a
+                                href="https://youtube.com/playlist?list=PL7RtZMiaOk8i_vKhswYLM-3-swaEd9Cft&si=ECowM4JLJm3s3Lai"
+                                class="link">click
+                                here</a></p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>download link:<a href="download" class="link">click here</a></p>
+                        <p>(unofficial)</p>
+
+                    </div>
+                    <br>
+                    <div>
+                        <p>wikipidia:<a href="https://en.wikipedia.org/wiki/Sekiro:_Shadows_Die_Twice"
+                                class="link">click here</a></p>
+
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>similar games </h1>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image2.webp">
+                        </div>
+                        <div class="r1">
+                            <p>elden ring</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/img.1.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 1</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="l1">
+                            <img class="sim-img" src="media/image.png">
+                        </div>
+                        <div class="r1">
+                            <p>dark souls 3</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="title">
+                    <h1>OVERVIEW</h1>
+                </div>
+                <div>
+                    <p>Sekiro: Shadows Die Twice[a] is a 2019 action-adventure game developed by FromSoftware. It was
+                        released in Japan by FromSoftware and internationally by Activision for the PlayStation 4,
+                        Windows and Xbox One in March 2019 and for Stadia in October 2020.
+
+                        Players control Wolf, a shinobi who embarks on a quest to rescue his lord, and becomes embroiled
+                        into a conflict for Ashina's fate. The gameplay is focused on stealth, exploration, and combat,
+                        with a particular emphasis on boss battles.</p>
+                    <p> It takes place in a fictionalized Japan during the Sengoku period and makes strong references to
+                        Buddhist mythology and philosophy. Lead director Hidetaka Miyazaki wanted to create a new
+                        intellectual property (IP) that marked a departure from their Dark Souls series, wanting to make
+                        a Japanese-themed game around shinobi and ninja. Tenchu, as an IP tied to FromSoftware and with
+                        that history theme, ended up being the impetus for the project.[1]
+
+                        Sekiro received acclaim from critics, who praised its gameplay and setting and compared it
+                        favorably to FromSoftware's past work, although opinions on its heavy difficulty were mixed.</p>
+                    <p> It won several year-end awards, including the Game Award for Game of the Year, and has sold over
+                        ten million units as of September 2023.</p>
+
+                </div>
+
+                <div class="title">
+                    <h1>PLOT</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <p>During the late Sengoku period, the Ashina clan, led by Kensei Isshin Ashina, seizes a land
+                            rich in divine favor, including a foreign deity dubbed the Divine Dragon which can grant
+                            immortality through a bloodline dubbed the "Dragon's Heritage" and through the Rejuvenating
+                            Waters and its mukade-infested Sediment. During this time, a nameless orphan is adopted by
+                            the wandering shinobi Owl, who names the boy "Wolf" and trains him in his ways. As Wolf
+                            grows up, Owl entrusts him with safeguarding the young lord Kuro, the last of the Dragon's
+                            Heritage line.</p>
+
+                        <p> Two decades later, the now-elderly Isshin is on his deathbed and the weakened Ashina is
+                            besieged by the forces of the Interior Ministry to finish the unification of Japan.
+                            Desperate to save his clan, Isshin's adoptive grandson, Genichiro, seeks Kuro to use his
+                            blood to create an immortal army. Disagreeing with his grandson's methods, Isshin has his
+                            private physician, Emma, warn Wolf so the two can flee. However, Genichiro confronts them
+                            and defeats Wolf in a duel, severing his left arm and capturing Kuro. Wolf is saved by a man
+                            called the Sculptor, who gifts him a prosthetic arm. To rescue Kuro, Wolf assaults Ashina
+                            Castle, where he meets Isshin and is given a new name: "Sekiro". Optionally, Sekiro can
+                            revisit his past through meditation using various items he finds; three years ago, Kuro's
+                            home was raided by bandits led by the shinobi Lady Butterfly, leading to Owl's apparent
+                            death. While Sekiro defeated her, he was fatally stabbed by an unknown assailant and only
+                            survived after Kuro shared his blood with him.
+                        </p>
+                    </div>
+                    <div class="r1">
+                        <img src="img1.webp" id="mainimg2">
+                    </div>
+                </div>
+                <div class="title">
+                    <h1>Development and release</h1>
+                </div>
+                <div class="content">
+                    <div class="l1">
+                        <img src="img1.webp" id="mainimg2">
+                    </div>
+                    <div class="r1">
+                        <p>Development of Sekiro began in late 2015 following the completion of Bloodborne's
+                            downloadable content, The Old Hunters.[9] It was directed by Hidetaka Miyazaki, who had
+                            previously worked on the Dark Souls series and Bloodborne.[10] Sekiro draws inspiration from
+                            the Tenchu series of stealth-action games developed by Acquire and published by
+                            FromSoftware.[11] The team initially considered developing the game as a sequel to Tenchu;
+                            however, it quickly outgrew the concept.[12] Miyazaki intended the combat changes to capture
+                            the feel of "swords clashing", with fighters trying to create an opening to deliver the
+                            fatal strike.[4] He and the team also created the game to be an entirely single-player
+                            experience, as they believed multiplayer to have limitations they wanted to avoid.[7]
+                            Despite the game taking place during the Sengoku period of real-world Japanese history, no
+                            historical people or locations are featured in the game.[13]
+
+                        </p>
+                    </div>
+                </div>
+                <div class="trailervid">
+                    <iframe width="800" height="450" src="https://www.youtube.com/embed/rXMX4YJ7Lks?si=RGgiSjGuj4Gp6idR"
+                        title="Elden Ring Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+            <div class="right-right">
+                <div class="official-download">
+                    <div>
+                        <img src="cropped_circle_image (2).png">
+                    </div>
+                    <div id="official-link">OFFICIAL DOWNLOAD LINK:<a
+                            href="https://store.steampowered.com/app/814380/Sekiro_Shadows_Die_Twice__GOTY_Edition/"
+                            class="link"> download</a>
+                    </div>
+
+                </div>
+                <div class="system-req">
+                    <div class="title">
+                        <h1>system requirements</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>minimum </h2>
+                            <p>OS:<br><br> Windows 7 / 8 / 10 (64-bit) </p>
+                            <p>Processor:<br><br> Intel Core i3-2100 or AMD FX-6300</p>
+                            <p>Memory:<br><br> 4 GB RAM</p>
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 760 or AMD Radeon HD 7950</p>
+                            <p>Storage:<br><br> 25 GB available space</p>
+
+                        </div>
+                        <div class="rec">
+                            <h2>recommended</h2>
+                            <p>OS:<br><br> Windows 7 / 8 / 10 (64-bit)</p>
+
+                            <p>Processor:<br><br> Intel Core i5-2500K or AMD Ryzen 5 1400</p>
+
+                            <p>Memory:<br><br> 8 GB RAM</p>
+
+                            <p>Graphics:<br><br> Nvidia GeForce GTX 970 or AMD Radeon RX 570</p>
+
+                            <p>Storage:<br><br> 25 GB available space</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        function sound() {
+            const bgsound = document.getElementById("bg-vid");
+            const mutebtn = document.getElementById("mutebtn");
+
+
+            if (bgsound.muted == true) {
+                bgsound.muted = false;
+                mutebtn.innerHTML = `<img src="do-not-make-a-loud-noise-no-speaker-no-sound-icon-free-vector.jpg" id="img1">`;
+
+
+            }
+            else {
+                bgsound.muted = true;
+                mutebtn.innerHTML = `<img src="1818835-200.png" id="img1">`;
+            }
+        }
+
+        window.addEventListener("scroll", function () {
+
+            let scrollY = window.scrollY;
+            let blurAmount = Math.min(scrollY / 80, 10);
+
+            document.getElementById("bg-vid").style.filter =
+                "blur(" + blurAmount + "px)";
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2 // Triggers when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add the class that triggers the animation
+                        entry.target.classList.add("in-view");
+
+                        // Stop observing once the animation has triggered
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Target the elements we want to animate
+            const animatedElements = document.querySelectorAll('.right, .linktable, .official-download ,.system-req ,.sim-games');
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

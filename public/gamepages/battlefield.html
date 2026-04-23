@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battlefield V - GameKnight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeupin {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(200, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(200, 0, 0, 0.8); }
+        }
+
+        html, body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            padding-top: 100px;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        #bg-vid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.25;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 15px 40px;
+            border-radius: 30px;
+            background: rgba(200, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(200, 0, 0, 0.2);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .list {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #ff4444;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .link:hover {
+            color: #ffff00;
+            text-shadow: 0 0 15px rgba(200, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .mutebtn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .img1 {
+            height: 30px;
+            width: auto;
+            filter: brightness(1.2);
+        }
+
+        #panel {
+            position: relative;
+            padding: 40px;
+            margin-top: 100vh;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 0.8fr 3fr 0.8fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .left, .right, .right-right {
+            border-radius: 20px;
+            background: rgba(200, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.2);
+            box-shadow: 0 4px 30px rgba(200, 0, 0, 0.1);
+            padding: 30px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out forwards;
+        }
+
+        .left {
+            animation-delay: 0s;
+        }
+
+        .right {
+            animation-delay: 0.3s;
+        }
+
+        .right-right {
+            animation-delay: 0.6s;
+        }
+
+        .mainimg1 {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(200, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .mainimg1:hover {
+            transform: scale(1.05);
+        }
+
+        .title {
+            background: linear-gradient(90deg, transparent 0%, rgba(200, 0, 0, 0.1) 50%, transparent 100%);
+            border-bottom: 2px solid rgba(200, 0, 0, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .title h1, .title h2 {
+            font-family: 'Cinzel', serif;
+            color: #ff4444;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        p {
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .linktable {
+            background: rgba(200, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.3s forwards;
+        }
+
+        .linktable div {
+            border: 2px solid rgba(200, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .linktable div:hover {
+            background: rgba(200, 0, 0, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(200, 0, 0, 0.3);
+            border-color: rgba(200, 0, 0, 0.8);
+        }
+
+        .linktable p {
+            margin: 0;
+        }
+
+        .sim-games {
+            background: rgba(200, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .sim-games div {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sim-games div:hover {
+            background: rgba(200, 0, 0, 0.1);
+            transform: translateX(10px);
+        }
+
+        .sim-img {
+            width: 60px;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(200, 0, 0, 0.3);
+        }
+
+        .sim-games p {
+            margin: 0;
+            flex: 1;
+        }
+
+        .content {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .trailervid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .trailervid iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .official-download {
+            background: rgba(200, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.6s forwards;
+        }
+
+        .official-download img {
+            width: 80px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        #official-link {
+            border: 2px solid rgba(200, 0, 0, 0.5);
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        #official-link:hover {
+            background: rgba(200, 0, 0, 0.15);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(200, 0, 0, 0.3);
+            border-color: rgba(200, 0, 0, 0.8);
+        }
+
+        .system-req {
+            background: rgba(200, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(200, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.9s forwards;
+        }
+
+        .min, .rec {
+            text-align: center;
+            flex: 1;
+        }
+
+        .system-req .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .min h2, .rec h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ff4444;
+        }
+
+        .min p, .rec p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .game-features {
+            margin: 30px 0;
+            opacity: 0;
+            animation: fadeupin 1.2s ease-out 0.4s forwards;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .feature-item {
+            background: rgba(200, 0, 0, 0.08);
+            border: 1px solid rgba(200, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(200, 0, 0, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(200, 0, 0, 0.5);
+        }
+
+        .feature-item strong {
+            color: #ff4444;
+        }
+
+        .mainimg2 {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 2px solid rgba(200, 0, 0, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-vid">
+        <source src="https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/giphy.mp4" type="video/mp4">
+    </video>
+
+    <div class="navbar">
+        <ul class="list">
+            <li><a href="/" class="link">HOME</a></li>
+            <li><a href="/browse" class="link">BROWSE</a></li>
+            <li><a href="/store" class="link">STORE</a></li>
+            <li><button onclick="toggleSound()" class="mutebtn"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4444'%3E%3Cpath d='M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm3.5 9c0 1.93-1.57 3.5-3.5 3.5S8.5 13.93 8.5 12 10.07 8.5 12 8.5s3.5 1.57 3.5 3.5z'/%3E%3C/svg%3E" class="img1" alt="Sound"></button></li>
+        </ul>
+    </div>
+
+    <section id="panel">
+        <div class="info-section">
+            <div class="left">
+                <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&q=80" alt="Battlefield V" class="mainimg1">
+
+                <div class="linktable">
+                    <div>
+                        <p>📺 <a href="https://www.youtube.com/watch?v=yEhbcNaJVXE" class="link" target="_blank">GAMEPLAY WALKTHROUGH</a></p>
+                    </div>
+                    <div>
+                        <p>🎮 <a href="https://www.origin.com/store/battlefield/battlefield-v" class="link" target="_blank">OFFICIAL STORE</a></p>
+                    </div>
+                    <div>
+                        <p>📖 <a href="https://en.wikipedia.org/wiki/Battlefield_V" class="link" target="_blank">WIKIPEDIA</a></p>
+                    </div>
+                </div>
+
+                <div class="sim-games">
+                    <div class="title">
+                        <h1>SIMILAR GAMES</h1>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=60&q=80" class="sim-img" alt="Call of Duty">
+                        <p>Call of Duty</p>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1538481143235-7e54c755b9ca?w=60&q=80" class="sim-img" alt="Halo">
+                        <p>Halo Infinite</p>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1587254294688-643da7d1dd0d?w=60&q=80" class="sim-img" alt="Destiny">
+                        <p>Destiny 2</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="title">
+                    <h1>BATTLEFIELD V</h1>
+                </div>
+
+                <div class="content">
+                    <div>
+                        <h2 style="color: #ff4444; margin-bottom: 10px;">OVERVIEW</h2>
+                        <p>Battlefield V is an all-out multiplayer warfare experience set during World War II. Experience large-scale, squad-based combat across a variety of iconic WWII locations. Choose your role, master teamwork, and dominate the battlefield with up to 64 players. The game emphasizes squad mechanics, destruction, and dynamic environments that change during matches. Every shot matters in this visceral, authentic portrayal of global warfare.</p>
+                    </div>
+                </div>
+
+                <div class="game-features">
+                    <h2 style="color: #ff4444; margin-bottom: 15px; font-family: 'Cinzel', serif;">KEY FEATURES</h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <strong>⚔️ Squad-Based Combat</strong>
+                            <p>Work together with your squad for maximum effectiveness in large-scale battles</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>💥 Dynamic Destruction</strong>
+                            <p>Maps evolve as buildings collapse and environments shift during matches</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>🌍 WWII Locations</strong>
+                            <p>Fight across iconic European and Pacific theater battlefields</p>
+                        </div>
+                        <div class="feature-item">
+                            <strong>🎯 Multiple Game Modes</strong>
+                            <p>Conquest, Team Deathmatch, Combined Arms co-op, and more</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div>
+                        <h2 style="color: #ff4444; margin-bottom: 10px; font-family: 'Cinzel', serif;">PLOT</h2>
+                        <p>Battlefield V takes players back to the Human Drama of World War II. Through the eyes of various soldiers across different nations and fronts, experience untold stories of ordinary people caught in extraordinary circumstances. The War Stories campaign follows protagonists like an Under-The-Radar spy, a colonial soldier, and a tank crew as they navigate the moral complexities and human costs of warfare. Each story reveals a different perspective on WWII, emphasizing individual heroism and sacrifice during humanity's greatest conflict.</p>
+                    </div>
+                </div>
+
+                <div class="trailervid">
+                    <iframe src="https://www.youtube.com/embed/yEhbcNaJVXE" title="Battlefield V Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="right-right">
+                <div class="official-download">
+                    <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e0b341?w=80&q=80" alt="Battlefield">
+                    <div id="official-link">
+                        <p style="margin-bottom: 0;">🎮 GET IT NOW</p>
+                        <a href="https://www.origin.com/store/battlefield/battlefield-v" class="link" target="_blank" style="display: block; margin-top: 10px;">VISIT OFFICIAL STORE</a>
+                    </div>
+                </div>
+
+                <div class="system-req">
+                    <div class="title">
+                        <h1>SYSTEM REQUIREMENTS</h1>
+                    </div>
+                    <div class="content">
+                        <div class="min">
+                            <h2>MINIMUM</h2>
+                            <p><strong>OS:</strong> Windows 10</p>
+                            <p><strong>CPU:</strong> i5-6600K</p>
+                            <p><strong>RAM:</strong> 8 GB</p>
+                            <p><strong>GPU:</strong> GTX 960 / R9 290</p>
+                            <p><strong>Storage:</strong> 50 GB</p>
+                        </div>
+                        <div class="rec">
+                            <h2>RECOMMENDED</h2>
+                            <p><strong>OS:</strong> Windows 10/11</p>
+                            <p><strong>CPU:</strong> i7-8700K</p>
+                            <p><strong>RAM:</strong> 16 GB</p>
+                            <p><strong>GPU:</strong> RTX 2070 / RX 2070</p>
+                            <p><strong>Storage:</strong> 50 GB SSD</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(200, 0, 0, 0.05); backdrop-filter: blur(10px); border: 2px solid rgba(200, 0, 0, 0.3); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>📊 RELEASE INFO</strong></p>
+                    <p style="margin: 5px 0;"><strong>Release:</strong> November 20, 2018</p>
+                    <p style="margin: 5px 0;"><strong>Rating:</strong> 7.1/10</p>
+                    <p style="margin: 5px 0;"><strong>Platforms:</strong> PC, PS4, Xbox One</p>
+                    <p style="margin: 5px 0;"><strong>Genre:</strong> First-Person Shooter</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleSound() {
+            const video = document.getElementById('bg-vid');
+            video.muted = !video.muted;
+        }
+    </script>
+</body>
+</html>
