@@ -1,15 +1,14 @@
-<h1 align="center">🛍️ React E-Commerce Store</h1>
+<h1 align="center">GameKnight</h1>
 
 ![](/src/Resources/image/preview1.png)
 <p align="center">
-  Game Store built with React
+  Game Store
 </p>
 
 ## Short Description
-An e-commerce store, imitating a Game Store, built with React. Includes dedicated game pages, a search functionality, genre and rating filters, a like feature and a wishlist. Responsive to the bone and tested with Jest. You can find a list of [features](#features), [performance tests](#performance) and [technologies used](#technologies-used) below.
+Discover, explore, and play the best games all in one place. Our game store offers a massive collection of trending and classic titles across genres—from action and adventure to strategy and indie gems. Enjoy a seamless browsing experience, detailed game insights, user reviews, and secure purchases. Whether you're a casual player or a hardcore gamer, find your next favorite game here.
 
-## 🔴 Demo
-🧪 [Live Demo](https://gianlucajahn.github.io/react-ecommerce-store) available. Click "Live Demo" to open it.
+
 
 ## Showcase
 You can see images and a GIF of the project in user interaction below. The user starts on the landing page, navigates through the browse section, selects a game, adds it to their cart and opens the cart. The GIF does not show all features of the shop, it only shows the most elementary user interactions. <br /> <br />
@@ -21,31 +20,6 @@ You can see images and a GIF of the project in user interaction below. The user 
 ![](/src/Resources/image/preview4.png)
 ![](/src/Resources/image/showcase.gif)
 
-## Performance
-I let [Google Lighthouse](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk?hl=de) run over my application to check for it's **performance, accessibility, use of best practices and SEO optimization**. You can view the results right below this paragraph.
-
-![Google Lighthouse Performance Results](https://i.ibb.co/qkXkY5W/report1.png)
-
-## Motivation
-My motivations in building this project were showcasing what I learned so far and to have somewhat of a "sandbox" to experiment and build within. I was able to learn new libraries and I had to be creative with ways to improve my application's performance. I also believed that building a project with a much bigger codebase than my preceding ones and learning how to organize such a codebase could set me off better for work in a business environment - and it did.
-
-## Features
-- Expressive, responsive and clear UI/UX
-- Extensive unit and integration tests to ensure intentional behaviour
-- Search any game you want
-- Filters to sort after genres and ratings
-- Like & Wishlist feature to track your personal wishlist
-- Smooth Animations with Framer Motion
-- Quick Navigation to view all parts of the project without having to click through it
-
-## Technologies Used
-- React
-- React Router Dom
-- Framer Motion
-- Jest
-- CSS
-- Git
-- CDN 
 
 ## What I learned:
 - Using motion libraries (e.g. Framer Motion) to achieve much smoother user experiences while maintaining clean code
